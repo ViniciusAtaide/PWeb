@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Moderador;
 import model.Usuario;
 
 import org.apache.commons.fileupload.FileItem;
@@ -21,6 +20,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import dao.DAOModerador;
 import dao.DAOUsuario;
 
 @WebServlet(urlPatterns = { "/user.do" })
@@ -84,9 +84,8 @@ public class UsuarioController extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		caminho = getServletContext().getInitParameter("file-upload");
-		filepath = getServletContext().getInitParameter("file-path");
-		Moderador modera = (Moderador) getServletContext().getAttribute(
-				"moderador");
+		filepath = getServletContext().getInitParameter("file-path");		
+		DAOModerador modao = new DAOModerador();
 		String a = null;
 		String login = null;
 		String pass = null;
@@ -147,18 +146,12 @@ public class UsuarioController extends HttpServlet {
 		case login:
 			try {
 				Usuario u = udao.findByLogin(login);
-				if (pass.equals(u.getSenha())) {
+				if (pass.equals(u.getSenha()) || (!(modao.find(1).getLogin().equals(login)) && (!(modao.find(1).getSenha().equals(pass))))) {
 					session.setAttribute("user", u);
 					request.setAttribute("content_message", "Login concluido!");
 					forward = "index.jsp";
 				} else {
-					request.setAttribute("error_message", "Senha Incorreta");
-				}
-
-				if (login.equals(modera.getLogin())
-						&& pass.equals((modera.getSenha()))) {
-					request.setAttribute("content_message", "Login concluido!");
-					forward = "index.jsp";
+					request.setAttribute("error_message", "Senha Incorreta");					
 				}
 			} catch (Exception e) {
 				request.setAttribute("error_message", "Usuario Nao Encontrado");
@@ -167,23 +160,22 @@ public class UsuarioController extends HttpServlet {
 			break;
 		case create:
 			try {
-				if (udao.findByLogin(login) == null
-						|| !(modera.getLogin().equals(login))) {
+				if (udao.findByLogin(login) == null || !(modao.find(1).getLogin().equals(login)) ) {
 					Usuario user = new Usuario(login, pass, filepath);
 					udao.persist(user);
 					session.setAttribute("user", user);
 					forward = "index.jsp";
-					request.setAttribute("content_message",
-							"Usuario cadastrado com sucesso");
+					request.setAttribute("content_message", "Usuario cadastrado com sucesso");
 				} else {
-					request.setAttribute("error_message",
-							"Usuario ja cadastrado");
+					request.setAttribute("error_message", "Usuario ja cadastrado");
 				}
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 				e.printStackTrace();
 			} catch (PersistenceException e) {
 				request.setAttribute("error_message", "Usuario ja existente");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			break;
 		case search:

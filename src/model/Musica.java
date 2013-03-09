@@ -45,8 +45,9 @@ public class Musica {
 	public Musica() {
 	}
 
-	public Musica(String nome) {
+	public Musica(String nome, String arq) {
 		this.nome = nome;
+		this.caminhoarq = arq;
 		numusuarios = this.usuarios.size();
 	}	
 

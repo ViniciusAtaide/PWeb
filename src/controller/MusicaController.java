@@ -31,6 +31,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import dao.DAOMiniPost;
+import dao.DAOModerador;
 import dao.DAOMusica;
 
 @WebServlet("/music.do")
@@ -45,7 +46,7 @@ public class MusicaController extends HttpServlet {
 	private String n;
 
 	private enum action {
-		delete, create, update, search, show, play, stop;
+		delete, create, update, search, show;
 	}
 
 	private DAOMusica mudao;
@@ -66,7 +67,7 @@ public class MusicaController extends HttpServlet {
 		filepath = getServletContext().getInitParameter("file-path");
 		mudao = new DAOMusica();
 		forward = URL;
-
+		HttpSession session = request.getSession();
 		String a = request.getParameter("action");
 		String busca = request.getParameter("busca");
 		int id = 0;
@@ -102,40 +103,7 @@ public class MusicaController extends HttpServlet {
 				forward = "music.jsp";
 				break;
 
-			case play:
-				try {
-					request.setAttribute("music_message", "Escutando trilha");
-					// Filter
-					HttpSession session = request.getSession();
-					DAOMiniPost minidao = new DAOMiniPost();
-					String mus = m.getNome();
-					String titulo = ((Usuario) session.getAttribute("user"))
-							.getLogin() + " esta escutando " + mus;
-					String autores = "";
-					for (Autor au : m.getAutores()) {
-						autores += au.getNome() + ", ";
-					}
-					String conteudo = "Estilo: " + m.getEstilo().getNome()
-							+ "<br>Autores: " + autores + "<br>Album: "
-							+ m.getAlbum().getNome();
-					MiniPost minipost = new MiniPost(conteudo, titulo, m,
-							(Usuario) session.getAttribute("user"));
-					((Usuario) session.getAttribute("user"))
-							.addMiniPost(minipost);
-					minipost.setUsuario((Usuario) session.getAttribute("user"));
-					minidao.persist(minipost);
-					minidao.commit();
-					minidao.close();
-
-					// //////////////////////////////
-					p.play();
-				} catch (JavaLayerException e) {
-					e.printStackTrace();
-				}
-				break;
-			case stop:
-				p.close();
-			default:
+				default:
 				break;
 			}
 		} catch (JavaLayerException e1) {
@@ -160,11 +128,12 @@ public class MusicaController extends HttpServlet {
 		forward = URL;
 		mudao = new DAOMusica();
 		mudao.begin();
+		DAOModerador modao = new DAOModerador();
 		if (ServletFileUpload.isMultipartContent(request)) {
 
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setFileSizeMax(10485760);
+			upload.setFileSizeMax(20485760);
 			try {
 				@SuppressWarnings("unchecked")
 				List<FileItem> lista = upload.parseRequest(request);
@@ -220,7 +189,12 @@ public class MusicaController extends HttpServlet {
 				Autor au = new Autor(autor);
 				Estilo es = new Estilo(estilo, "");
 				Album al = new Album(album, "");
-				Musica mus = new Musica(nome, filepath, us);
+				Musica mus = null;
+				if (!(modao.find(1).getLogin().equals(us.getLogin()))) {
+					mus = new Musica(nome, filepath, us);
+				} else {
+					mus = new Musica(nome, filepath);
+				}
 				mus.addAutor(au);
 				au.addMusica(mus);
 				mus.setEstilo(es);
@@ -229,9 +203,10 @@ public class MusicaController extends HttpServlet {
 				al.addMusica(mus);
 				mudao.persist(mus);
 				request.setAttribute("content_message",
-						"M�sica cadastrada com sucesso");
+						"Música cadastrada com sucesso");
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
+				e.printStackTrace();
 			}
 			break;
 		default:

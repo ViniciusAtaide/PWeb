@@ -9,11 +9,11 @@ public class DAOMiniPost extends DAOJPA<MiniPost> {
 		super();
 	}
 	
-	// consultas específicas
+	// consultas especï¿½ficas
 	
 	@SuppressWarnings("unchecked")
-	public List<MiniPost> ListByDataPostado() {
-		List<MiniPost> lista = super.findAllByQuery("select m from minipost m order by m.datapostado"); 
+	public List<MiniPost> findByDataPostado() {
+		List<MiniPost> lista = super.findAllByQuery("select m from Minipost m order by m.tempopost"); 
 		return lista;
 	}
 }

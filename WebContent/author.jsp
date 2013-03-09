@@ -1,4 +1,9 @@
-<%@include file="header.jsp"%>
+<!DOCTYPE html>
+<%@taglib prefix="v" tagdir="/WEB-INF/tags" %>
+
+<div class="container pagination-centered">
+<v:header titulo="Projeto - Pagina Principal"></v:header>
+
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="offset4">

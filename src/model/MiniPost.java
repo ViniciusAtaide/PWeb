@@ -28,7 +28,8 @@ public class MiniPost {
 	private Musica musica;
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	private Usuario usuario;
-
+	
+	
 	public MiniPost() {
 	}
 
@@ -37,7 +38,6 @@ public class MiniPost {
 		this.titulo = titulo;
 		this.datapostado = Calendar.getInstance();
 	}
-
 	public MiniPost(String conteudo, String titulo, Musica musica,
 			Usuario usuario) {
 		this.conteudo = conteudo;

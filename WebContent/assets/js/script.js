@@ -83,6 +83,7 @@ function abreURL(input) {
 		      		$("#tit").removeAttr('disabled');
 		      		$("#aut").removeAttr('disabled');
 		      		$("#alb").removeAttr('disabled');
+		      		$("#est").removeAttr('disabled');
 		      	} else {
 		      		$('#foto').attr('src', src);
 		      		$('#file-falso').val(nome);		      	

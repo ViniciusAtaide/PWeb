@@ -60,4 +60,5 @@
 			<input type="submit" class="btn btn-danger" value="Concluir!" />	
 	</form>
 	</div>
+	<v:modals></v:modals>
 </div>
