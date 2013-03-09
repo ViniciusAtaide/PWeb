@@ -17,8 +17,8 @@
 	<div class="container">
 		<div class="hero-unit">
 			<div class="row">
-				<div class="span4">
-					<h3>Usuarios</h3>
+				<div class="span6">
+					<h3>Usuario</h3>
 					<c:forEach items="${users}" var="user">
 						<p>Login: ${user.login}</p>
 						<p>Senha: ${user.senha }</p>

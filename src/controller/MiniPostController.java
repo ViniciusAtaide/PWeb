@@ -47,7 +47,7 @@ public class MiniPostController extends HttpServlet {
 				minidao.remove(m);
 				request.setAttribute("content_message", "MiniPost Removido");
 			} catch(Exception e) {
-				request.setAttribute("error_message", "MiniPost já removido");
+				request.setAttribute("error_message", "MiniPost jï¿½ removido");
 			}
 			break;
 		default:
@@ -74,8 +74,7 @@ public class MiniPostController extends HttpServlet {
 				MiniPost minipost = new MiniPost(conteudo, titulo, u);
 				u.addMiniPost(minipost);
 				minidao.persist(minipost);
-				request.setAttribute("content_message",
-						"MiniPost criado com sucesso");
+				request.setAttribute("content_message", "MiniPost criado com sucesso");
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 				e.printStackTrace();

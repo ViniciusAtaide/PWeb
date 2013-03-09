@@ -1,11 +1,16 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
+			<!-- Div de cadastro do usuário -->
+
+
 <div id="cadastro" class="modal hide fade" tabindex="-1" role="dialog" aria-labbeledby="Cadastrar" aria-hidden="false">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3 id="Cadastrar">Cadastro</h3>
 	</div>
 	<div class="modal-body">
-		<form action="user.do" id="cadastrouser" method="post" enctype="multipart/form-data">
+		<form action="user.do" id="cadastrouser" method="post" enctype="multipart/form-data" accept-charset="iso-8859-1,utf-8">
 			<input type="hidden" name="action" value="create" /> <br />
 			<input type="text" class="span3" name="login" id="login" placeholder="Login" />
 			<span class="text-error" id="error-input"></span><br>
@@ -21,12 +26,16 @@
         	<img id="foto" src="assets/img/default-user-image.png" alt="Seu perfil" />
         	<br>
 			<input type="submit" class="btn btn-danger" value="Registrar!" /> <br>
-			<span class="text-error" id="error-submit"></span>
+			<span class="text-error" id="error-submit" style="display: hidden;"></span>
 		</form>
 	</div>
 </div>
-<div id="showuser" class="modal hide fade" tabindex="-1" role="dialog"
-	aria-labbeledby="Usuario" aria-hidden="false">
+
+<!-- ------------------------------------------------------------------------------------ -->
+			
+			<!-- Div de para amostragem do usuário -->
+			
+<div id="showuser" class="modal hide fade" tabindex="-1" role="dialog" aria-labbeledby="Usuario" aria-hidden="false">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3 id="Usuario">Usuario</h3>
@@ -40,32 +49,43 @@
 			</c:forEach>
 			<h4>Musicas</h4>
 			<c:forEach items="${user.musicas }" var="musica">
-			${musica.nome } <br>
+			<a href="musica.do?action=show&id=${musica.id }">${musica.nome }</a>
+			<div class="playdiv">
+				<a class="play" href="music.do?id=${musica.id}&action=play"><i class="icon-play" ></i></a>
+			</div>
+			<div class="stopdiv" style="display: none;">
+				<a class="stop" href="music.do?action=stop" disabled ><i class="icon-stop" ></i></a>
+			</div>			
 			</c:forEach>
 			${user.datacriado }
 	</div>
 </div>
+
+					<!-- Div para cadastrar musicas -->
+
 <div id="cadastromusica" class="modal hide fade" tabindex="-1" role="dialog" aria-labbeledby="CadastrarMusica" aria-hidden="false">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3 id="CadastrarMusica">Nova Música</h3>
 	</div>
 	<div class="modal-body">
-		<form action="music.do" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="action" value="create" /> <br>
-			<input type="text" class="span3" id="tit" name="nome" disabled placeholder="Titulo" /> <br>
-			<input type="text" class="span3" name="estilo" id="est" placeholder="Estilo" /> <br>				
-			<input type="text" class="span3" id="alb" name="album" disabled placeholder="Album"/><br>
-			<input type="text" class="span3" id="aut" name="autor" disabled placeholder="Autor"/>
-			<div id="div-input-file">
-            	<input name="musica" accept="audio/*" type="file" size="10" id="file-original" onchange="abreURL(this);"/>
-            	<div id="div-input-falso">
-            		<input name="file-falso" type="text" id="musica" class="span3" placeholder="Arquivo da Musica"/>
-          		</div>
-        	</div>
-        
-        	<br>
-			<input type="submit" class="btn btn-danger" value="Concluir!" />
+		<form action="music.do" method="post" enctype="multipart/form-data" accept-charset="iso-8859-1,utf-8">
+			<ul class="nav">						
+				<li>
+					<div id="div-input-file">
+		            	<input name="musica" accept="audio/*" type="file" size="10" id="file-original" onchange="abreURL(this);"/>
+		            	<div id="div-input-falso">
+		            		<input name="file-falso" type="text" id="musica" class="span3" placeholder="Arquivo da Musica"/>
+		          		</div>
+		        	</div>
+	        	</li>        	
+	        	<li><input type="hidden" name="action" value="create" /></li>
+				<li><input type="text" class="span3" id="tit" name="nome" disabled placeholder="Titulo" /> </li>
+				<li><input type="text" class="span3" name="estilo" id="est" placeholder="Estilo" /> <br></li>				
+				<li><input type="text" class="span3" id="alb" name="album" disabled placeholder="Album"/><br></li>
+				<li><input type="text" class="span3" id="aut" name="autor" disabled placeholder="Autor"/><br></li>			        
+				<li><input type="submit" class="btn btn-danger" value="Concluir!" /></li>
+			</ul>
 	</form>
 	</div>
 </div>

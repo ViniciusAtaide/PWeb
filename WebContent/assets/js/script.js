@@ -1,10 +1,8 @@
 $(document).ready(function() {
-	// CHECAGEM DE SENHAS
 	
-	$("#stop").on('click', function() {
-		$("#playdiv").css('display','inline');
-		$("#stopdiv").css('display','none');
-	});
+	
+	// CHECAGEM DE SENHA
+
 	if ($("#pass").val() != $("#passcheck").val() || $("#pass").val() == "") {
 		$("#error-pass").html("Verificar senha.");
 		$("#acert-pass").html("");
@@ -37,21 +35,40 @@ $(document).ready(function() {
 		}
 		return true;
 	});
+	
+	
 	//////////////////////////////////////////////////////////////////////////
-	$("#play").on('click',function() {
-		$("#playdiv").css('display','none');
-		$("#stopdiv").css('display','inline');
+	// Função de troca de botões
+	
+	
+	$(".play").on('click',function() {
+		$(".playdiv").css('display','none');
+		$(".stopdiv").css('display','inline');
 	});
+	$(".stop").on('click', function() {
+		$(".playdiv").css('display','inline');
+		$(".stopdiv").css('display','none');
+	});
+	
+	
+	/////////////////////////////////////////////////////////////////////////
 	// CHECAGEM DE CAMPOS MUSICAIS
+	
+	
 	$("#cadastromusica").submit(function() {
 		if ($("#tit").val() == "" && $("#est").val() == "" && $("#alb").val() == "" && $("#alb").val() == "" && $("#aut").val() == "") {
 			$("#error-submit").html("Preencha todos os campos!");
+			return false;
+		}
+		if ($("#tit").val().length < 3 && $("#est").val().length <3 && $("#alb").val().length <3 && $("#alb").val().length <3 && $("#aut").val().length <3) {
+			$("error-submit").html("Limite de caracteres abaixo do minimo");
 			return false;
 		}
 		return true;
 	});
 	
 });
+// Função mista para ambos os campos de arquivo de música e foto do usuario utilizando html5 files
 function abreURL(input) {	
 	if (input.files && input.files[0]) {
 		var f = input.files[0];	      	
@@ -59,7 +76,8 @@ function abreURL(input) {
 		reader.onload = (function(arq) { 
 			return function(e) {
 				var src = e.target.result;
-	      		var nome = arq.name;      		
+	      		var nome = arq.name;
+	      		// checa se o arquivo não é do tipo imagem
 				if (!f.type.match('image.*')) {	
 		      		$('#musica').val(nome);
 		      		$("#tit").removeAttr('disabled');

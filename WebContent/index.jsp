@@ -51,10 +51,10 @@
 			</div>
 			<div class="span5">
 				<h3>Top Musicas</h3>
-				<c:if test="${empty musics }">
+				<c:if test="${empty topmusics }">
 					<h4 class="text-info">Não há nenhuma música (ainda ;D)</h4>
 				</c:if>
-				<c:forEach items="${musics}" var="musica">
+				<c:forEach items="${topmusics}" var="musica">
 					<h3>
 						<a href="music.do?id=${musica.id}&action=show" data-toggle="modal">${musica.nome}</a>
 					</h3>
@@ -66,12 +66,14 @@
 						<br>
 					<a href="album.do?id=${musica.album.id}&action=show"
 						data-toggle="modal">${musica.album.nome }</a><br>
-					<div id="playdiv">
-						<a id="play" href="music.do?id=${musica.id}&action=play"><i class="icon-play" ></i></a>
-					</div>
-					<div id="stopdiv" style="display: none;">
-						<a id="stop" href="music.do?action=stop" disabled ><i class="icon-stop" ></i></a>
-					</div>
+					<c:if test="${user ne null }">
+						<div class="playdiv">
+							<a class="play" href="music.do?id=${musica.id}&action=play"><i class="icon-play" ></i></a>
+						</div>
+						<div class="stopdiv" style="display: none;">
+							<a class="stop" href="music.do?action=stop" disabled ><i class="icon-stop" ></i></a>
+						</div>
+					</c:if>
 				</c:forEach>
 			</div>
 			<c:if test="${user ne null }">

@@ -34,7 +34,7 @@ public class IndexListener implements ServletRequestListener,
 	public void requestInitialized(ServletRequestEvent sre) {
 		sre.getServletRequest().setAttribute("miniposts", midao.findAll());
 		sre.getServletRequest().setAttribute("users", udao.findAll());
-		sre.getServletContext().setAttribute("musics", mdao.findAll());
+		sre.getServletContext().setAttribute("musics", mdao.findAll());		
 	}
 
 	@Override
@@ -42,13 +42,15 @@ public class IndexListener implements ServletRequestListener,
 		srae.getServletRequest().setAttribute("miniposts", midao.findAll());
 		srae.getServletRequest().setAttribute("users", udao.findAll());
 		srae.getServletContext().setAttribute("musics", mdao.findAll());
+		srae.getServletContext().setAttribute("topmusics", mdao.findTopMusicas());
 	}
 
 	@Override
 	public void attributeRemoved(ServletRequestAttributeEvent srae) {
 		srae.getServletRequest().setAttribute("miniposts", midao.findAll());
 		srae.getServletRequest().setAttribute("users", udao.findAll());
-		srae.getServletContext().setAttribute("musics", mdao.findAll());
+		srae.getServletContext().setAttribute("musics", mdao.findTopMusicas());
+		srae.getServletContext().setAttribute("topmusics", mdao.findTopMusicas());
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class IndexListener implements ServletRequestListener,
 		udao = new DAOUsuario();
 		mdao = new DAOMusica();
 		modao = new DAOModerador();
-		if (modao.find(0) == null) {			
+		if (modao.find(1) == null) {			
 			modera = new Moderador(sce.getServletContext().getInitParameter("admlogin"),sce.getServletContext().getInitParameter("admpass"),"assets/img/user_admin.png");
 			sce.getServletContext().setAttribute("moderador", modera);
 			modao.begin();

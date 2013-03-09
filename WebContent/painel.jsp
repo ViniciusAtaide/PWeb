@@ -23,8 +23,7 @@
 				</c:if>
 				<c:forEach items="${miniposts}" var="minipost">
 					<h4>
-						<img width="50" height="50" src="${minipost.usuario.caminhofoto }" />${minipost.titulo
-						}
+						<img width="50" height="50" src="${minipost.usuario.caminhofoto }" />${minipost.titulo }
 					</h4>
 					<p>
 						<small>${minipost.conteudo }</small>
@@ -36,21 +35,11 @@
 					</p>
 					<a class="btn btn-danger" href="minipost.do?action=delete&id=${minipost.id}">Deletar MiniPost</a>
 				</c:forEach>
-					<div>
-						<h4>Novo MiniPost</h4>
-						<form action="minipost.do" method="post">
-							<input type="text" name="titulo" placeholder="Titulo" /> <br>
-							<textarea name="conteudo" cols="50" rows="10"
-								placeholder="Conteúdo"></textarea>
-							<br> <input type="hidden" name="action" value="create" /> <input
-								type="submit" value="Postar" class="btn btn-primary" />
-						</form>
-					</div>
 			</div>
 			<div class="span2">
 				<h3>Musicas</h3>
 				<c:if test="${empty musics }">
-					<h4 class="text-info">Não há nenhuma música (ainda ;D)</h4>
+					<h4 class="text-info">Não há nenhuma música</h4>
 				</c:if>
 				<c:forEach items="${musics}" var="musica">
 					<h3>
@@ -65,35 +54,44 @@
 					<a href="album.do?id=${musica.album.id}&action=show"
 						data-toggle="modal">${musica.album.nome }</a>
 					<br>
-					<div id="playdiv">
-						<a id="play" href="music.do?id=${musica.id}&action=play"><i
-							class="icon-play"></i></a>
-					</div>
-					<div id="stopdiv" style="display: none;">
-						<a id="stop" href="music.do?action=stop"><i
-							class="icon-stop"></i></a>
-					</div>
 					<a class="btn btn-danger" href="music.do?action=delete&id=${musica.id }">Deletar Música	</a>
 				</c:forEach>
 			</div>
-			<c:if test="${user ne null }">
-				<div>
-					<a class="btn btn-large btn-primary" href="#cadastromusica"
-						data-toggle="modal">Upload de Música</a>
-				</div>
-			</c:if>
-		</div>
+		
+			<div class="span2">
+				<h3>Artistas</h3>
+				<c:if test="${empty artist }">
+					<h4 class="text-info">Não há nenhum Artista</h4>
+				</c:if>
+				
+				<c:forEach items="${artists}" var="artista">
+					<p>${artista.nome}</p>
+					<p>${artista.sobre }</p>				
+					<h3>
+						<a href="artist.do?id=${artista.id}&action=show">${artista.nome}</a>
+					</h3>
+					<c:forEach items="${artista.estilos }" var="estilo">
+						<a href="style.do?id=${estilo.id}&action=show">${estilo.nome}</a>
+					</c:forEach>
+					<br>				
+					<br> 
+					<c:forEach items="${albums }" var="album">
+						<a href="album.do?id=${album.id }&action=show">${album.nome }</a>					
+					</c:forEach>				
+				</c:forEach>
+			</div>
+		</div>		
 		<div class="span2">
-			<h3>Artistas</h3>
-			<c:if test="${empty artist }">
-				<h4 class="text-info">Não há nenhum Artista</h4>
+			<h3>Musicas</h3>
+			<c:if test="${empty musics }">
+				<h4 class="text-info">Não há nenhuma música (ainda ;D)</h4>
 			</c:if>
-			<c:forEach items="${artists}" var="artista">
+			<c:forEach items="${musics}" var="musica">
 				<h3>
-					<a href="music.do?id=${artista.id}&action=show" data-toggle="modal">${artista.nome}</a>
+					<a href="music.do?id=${musica.id}&action=show" data-toggle="modal">${musica.nome}</a>
 				</h3>
-				<c:forEach items="${artista.estilos }" var="estilo">
-					<a href="style.do?id=${autor.id}&action=show" data-toggle="modal">${autor.nome}</a>
+				<c:forEach items="${musica.autores }" var="autor">
+					<a href="author.do?id=${autor.id}&action=show" data-toggle="modal">${autor.nome}</a>
 				</c:forEach>
 				<br>
 				<a href="style.do?id=${musica.estilo.id}&action=show">${musica.estilo.nome}</a>
@@ -102,51 +100,17 @@
 					data-toggle="modal">${musica.album.nome }</a>
 				<br>
 				<div id="playdiv">
-					<a id="play" href="music.do?id=${musica.id}&action=play"><i
-						class="icon-play"></i></a>
+					<a id="play" href="music.do?id=${musica.id}&action=play"><i class="icon-play"></i></a>
 				</div>
 				<div id="stopdiv" style="display: none;">
 					<a id="stop" href="music.do?action=stop"><i
 						class="icon-stop"></i></a>
 				</div>
+				<a href="music.do?action=delete&id=${musica.id}" class="btn btn-alert"> Deletar Musica</a>
 			</c:forEach>
 		</div>
 	</div>
 	<p class="text-success pagination-centered" id="music-message">${requestScope.music_message}</p>
-	<div class="span2">
-		<h3>Musicas</h3>
-		<c:if test="${empty musics }">
-			<h4 class="text-info">Não há nenhuma música (ainda ;D)</h4>
-		</c:if>
-		<c:forEach items="${musics}" var="musica">
-			<h3>
-				<a href="music.do?id=${musica.id}&action=show" data-toggle="modal">${musica.nome}</a>
-			</h3>
-			<c:forEach items="${musica.autores }" var="autor">
-				<a href="author.do?id=${autor.id}&action=show" data-toggle="modal">${autor.nome}</a>
-			</c:forEach>
-			<br>
-			<a href="style.do?id=${musica.estilo.id}&action=show">${musica.estilo.nome}</a>
-			<br>
-			<a href="album.do?id=${musica.album.id}&action=show"
-				data-toggle="modal">${musica.album.nome }</a>
-			<br>
-			<div id="playdiv">
-				<a id="play" href="music.do?id=${musica.id}&action=play"><i
-					class="icon-play"></i></a>
-			</div>
-			<div id="stopdiv" style="display: none;">
-				<a id="stop" href="music.do?action=stop"><i
-					class="icon-stop"></i></a>
-			</div>
-		</c:forEach>
-	</div>
-	<c:if test="${user ne null }">
-		<div>
-			<a class="btn btn-large btn-primary" href="#cadastromusica"
-				data-toggle="modal">Upload de Música</a>
-		</div>
-	</c:if>
 </div>
 <%@ include file="footer.jsp"%>
 </body>

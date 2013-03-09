@@ -57,7 +57,7 @@ public class MusicaController extends HttpServlet {
 		super();
 	}
 
-	public void init() {		
+	public void init() {
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -66,7 +66,7 @@ public class MusicaController extends HttpServlet {
 		filepath = getServletContext().getInitParameter("file-path");
 		mudao = new DAOMusica();
 		forward = URL;
-		
+
 		String a = request.getParameter("action");
 		String busca = request.getParameter("busca");
 		int id = 0;
@@ -79,62 +79,65 @@ public class MusicaController extends HttpServlet {
 			f = new FileInputStream(file);
 			buffer = new BufferedInputStream(f);
 		}
-		
+
 		Player p;
 		try {
-		p = new Player(buffer);
+			p = new Player(buffer);
 
-		mudao.begin();
+			mudao.begin();
 
-		switch (action.valueOf(a)) {
-		case delete:
-			mudao.remove(m);
-			request.setAttribute("content_message",
-					"Musica removida com sucesso");
-			break;
-		case search:
-			request.setAttribute("result", mudao.findByNome(busca));
-			forward = "music.jsp";
-			request.setAttribute("success-message", "Resultado da busca");
-			break;
-		case show :
-			request.setAttribute("music", m);
-			forward = "music.jsp";
-			break;
+			switch (action.valueOf(a)) {
+			case delete:
+				mudao.remove(m);
+				request.setAttribute("content_message",
+						"Musica removida com sucesso");
+				break;
+			case search:
+				request.setAttribute("result", mudao.findByNome(busca));
+				forward = "music.jsp";
+				request.setAttribute("success-message", "Resultado da busca");
+				break;
+			case show:
+				request.setAttribute("music", m);
+				forward = "music.jsp";
+				break;
 
-		case play:
-			try {				
-				request.setAttribute("music_message","Escutando trilha");
-				// Filter
-				HttpSession session = request.getSession();
-				DAOMiniPost minidao = new DAOMiniPost();
-				String mus = m.getNome();
-				String titulo = ((Usuario) session.getAttribute("user")).getLogin() + " Está escutando " + mus;
-				String autores = "";
-				for (Autor au : m.getAutores()) {
-					autores.concat(au.getNome() + ", ");
+			case play:
+				try {
+					request.setAttribute("music_message", "Escutando trilha");
+					// Filter
+					HttpSession session = request.getSession();
+					DAOMiniPost minidao = new DAOMiniPost();
+					String mus = m.getNome();
+					String titulo = ((Usuario) session.getAttribute("user"))
+							.getLogin() + " esta escutando " + mus;
+					String autores = "";
+					for (Autor au : m.getAutores()) {
+						autores += au.getNome() + ", ";
+					}
+					String conteudo = "Estilo: " + m.getEstilo().getNome()
+							+ "<br>Autores: " + autores + "<br>Album: "
+							+ m.getAlbum().getNome();
+					MiniPost minipost = new MiniPost(conteudo, titulo, m,
+							(Usuario) session.getAttribute("user"));
+					((Usuario) session.getAttribute("user"))
+							.addMiniPost(minipost);
+					minipost.setUsuario((Usuario) session.getAttribute("user"));
+					minidao.persist(minipost);
+					minidao.commit();
+					minidao.close();
+
+					// //////////////////////////////
+					p.play();
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
 				}
-				String conteudo = "Estilo: " +m.getEstilo().getNome() +"<br>Autores: "+autores +"<br>Album: "+ m.getAlbum().getNome();
-				MiniPost minipost = new MiniPost(conteudo, titulo, m,(Usuario) session.getAttribute("user") );
-				((Usuario) session.getAttribute("user")).addMiniPost(minipost);
-				minipost.setUsuario((Usuario) session.getAttribute("user"));
-				minidao.persist(minipost);
-				minidao.commit();
-				minidao.close();
-				
-				////////////////////////////////				
-				p.play();
-				System.out.println("2");				
+				break;
+			case stop:
+				p.close();
+			default:
+				break;
 			}
-			catch (JavaLayerException e) {
-				e.printStackTrace();
-			}
-			break;
-		case stop :
-			p.close();
-		default:
-			break;
-		}
 		} catch (JavaLayerException e1) {
 			e1.printStackTrace();
 		}
@@ -152,7 +155,7 @@ public class MusicaController extends HttpServlet {
 		String estilo = null;
 		String album = null;
 		String autor = null;
-	
+
 		HttpSession session = request.getSession();
 		forward = URL;
 		mudao = new DAOMusica();
@@ -226,7 +229,7 @@ public class MusicaController extends HttpServlet {
 				al.addMusica(mus);
 				mudao.persist(mus);
 				request.setAttribute("content_message",
-						"Música cadastrada com sucesso");
+						"Mï¿½sica cadastrada com sucesso");
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 			}
@@ -238,7 +241,7 @@ public class MusicaController extends HttpServlet {
 			mudao.commit();
 			mudao.close();
 		} catch (PersistenceException e) {
-			request.setAttribute("error_message", "Falha na transação");
+			request.setAttribute("error_message", "Falha na transaï¿½ï¿½o");
 		}
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
