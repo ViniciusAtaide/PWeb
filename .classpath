@@ -9,11 +9,9 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/eclipselink.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.persistence_2.0.4.v201112161009.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jftp-1.52.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.6-bin.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.2-1002.jdbc3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jid3lib-0.5.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

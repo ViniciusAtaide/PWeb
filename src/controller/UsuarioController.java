@@ -45,8 +45,7 @@ public class UsuarioController extends HttpServlet {
 	public void init() {
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getDAOUsuario();
 		String forward = URL;
 		HttpSession session = request.getSession();
@@ -58,22 +57,23 @@ public class UsuarioController extends HttpServlet {
 			u = udao.find(id);
 		}
 		udao.begin();
+		
 		switch (action.valueOf(a)) {
-		case delete:
-			udao.remove(u);
-			request.setAttribute("users", udao.findAll());
-			break;
-		case show:
-			request.setAttribute("user", u);
-			forward = URL + "#showuser";
-			break;
-		case logoff:
-			session.setAttribute("user", null);
-			session.invalidate();
-			request.setAttribute("content_message", "Logoff concluido!");
-			forward = "index.jsp";
-		default:
-			break;
+			case delete:
+				udao.remove(u);
+				request.setAttribute("users", udao.findAll());
+				break;
+			case show:
+				request.setAttribute("user", u);
+				forward = URL + "#showuser";
+				break;
+			case logoff:
+				session.setAttribute("user", null);
+				session.invalidate();
+				request.setAttribute("content_message", "Logoff concluido!");
+				forward = "index.jsp";
+			default:
+				break;
 		}
 		udao.commit();
 		udao.close();
@@ -81,8 +81,7 @@ public class UsuarioController extends HttpServlet {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		caminho = getServletContext().getInitParameter("file-upload");
 		filepath = getServletContext().getInitParameter("file-path");		
 		DAOModerador modao = new DAOModerador();
@@ -118,13 +117,9 @@ public class UsuarioController extends HttpServlet {
 					} else {
 						nome = item.getName();
 						if (item.getFieldName().lastIndexOf("\\") >= 0) {
-							file = new File(caminho
-									+ nome.substring(nome.lastIndexOf("\\")));
+							file = new File(caminho + nome.substring(nome.lastIndexOf("\\")));
 						} else {
-							file = new File(
-									caminho
-											+ nome.substring(nome
-													.lastIndexOf("\\") + 1));
+							file = new File(caminho + nome.substring(nome.lastIndexOf("\\") + 1));
 						}
 						if (nome != "") {
 							filepath += nome;

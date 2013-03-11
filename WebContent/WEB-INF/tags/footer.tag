@@ -12,7 +12,6 @@
     </div>
 <script src="assets/js/jquery-latest.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/filereader.js"></script>
 <script src="assets/js/script.js"></script>
-<script src="assets/js/id3.js"></script>
-<script src="assets/js/binaryajax.js"></script>
 </div>

@@ -65,10 +65,31 @@ $(document).ready(function() {
 			return false;
 		}
 		return true;
-	});
-	
+	});	
 });
 // Função mista para ambos os campos de arquivo de música e foto do usuario utilizando html5 files
+function abreId3(input) {
+	  var reader = new FileReader();
+
+	  reader.onload = function(e) {
+		    var dv = new jDataView(this.result);
+	
+		    if (dv.getString(3, dv.byteLength - 128) == 'TAG') {
+		    	$("#tit").removeAttr('disabled');
+	      		$("#aut").removeAttr('disabled');
+	      		$("#alb").removeAttr('disabled');
+	      		$("#est").removeAttr('disabled');
+	      		$("#tit").val(dv.getString(30, dv.tell()));
+	      		$("#aut").val(dv.getString(30, dv.tell()));
+	      		$("#alb").val(dv.getString(30, dv.tell()));
+	      		$("#musica").val(input.files[0].name);	
+		    } else {
+		    	$("#erro_musica").html("Formato id3 não suportado.");
+		    }
+	  };
+
+	  reader.readAsArrayBuffer(input.files[0]);
+}
 function abreURL(input) {	
 	if (input.files && input.files[0]) {
 		var f = input.files[0];	      	
@@ -77,17 +98,8 @@ function abreURL(input) {
 			return function(e) {
 				var src = e.target.result;
 	      		var nome = arq.name;
-	      		// checa se o arquivo não é do tipo imagem
-				if (!f.type.match('image.*')) {	
-		      		$('#musica').val(nome);
-		      		$("#tit").removeAttr('disabled');
-		      		$("#aut").removeAttr('disabled');
-		      		$("#alb").removeAttr('disabled');
-		      		$("#est").removeAttr('disabled');
-		      	} else {
-		      		$('#foto').attr('src', src);
-		      		$('#file-falso').val(nome);		      	
-		      	}				
+	      		$('#foto').attr('src', src);
+	      		$('#file-falso').val(nome);		      		     
 			};
 		})(f);
 		reader.readAsDataURL(f);		

@@ -37,8 +37,7 @@
 							</div>
 						</c:if>
 						<c:if test="${sessionScope.user eq null }">
-							<form class="navbar-form pull-right" action="user.do"
-								method="post">
+							<form class="navbar-form pull-right" action="user.do" method="post" accept-charset="utf-8">
 								<input type="text" class="span2" name="login"
 									placeholder="Login"> <input type="password"
 									class="span2" name="senha" placeholder="Pass"> <input
@@ -54,7 +53,7 @@
 							<li>
 								<form action="musica.do" method="get" class="form-search navbar-form">
 									<div class="input-append">
-										<input type="text" class="input-medium search-query span2" name="busca" id="appendInputButton" placeholder="Buscar Música" /> 
+										<input type="search" class="input-medium search-query span2" name="busca" id="appendInputButton" placeholder="Buscar Música" /> 
 										<input type="hidden" name="action" value="search" />
 										<button type="submit" class="btn">
 											<i class="icon-search"></i>

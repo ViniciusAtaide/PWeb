@@ -11,12 +11,12 @@
 		<h3 id="Cadastrar">Cadastro</h3>
 	</div>
 	<div class="modal-body">
-		<form action="user.do" id="cadastrouser" method="post" enctype="multipart/form-data" accept-charset="iso-8859-1,utf-8">
-			<ul class="nav">
-				<input type="hidden" name="action" value="create" /> 
-				<li><input type="text" class="span3" name="login" id="login" placeholder="Login" /><span class="text-error" id="error-input"></span></li>
-				<li><input type="password" class="span3" id="pass" name="senha" placeholder="Password" /><span class="text-error" id="error-pass"></span></li>
-				<li><input type="password" class="span3" id="passcheck" name="senhacheck" placeholder="Repita o Password" /><span class="text-success" id="acert-pass"></span></li>
+		<form action="user.do" id="cadastrouser" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+		<input type="hidden" name="action" value="create" />
+			<ul class="nav">				 
+				<li><input type="text" class="span3" name="login" id="login" autocomplete="off" placeholder="Login" /><span class="text-error" id="error-input"></span></li>
+				<li><input type="password" class="span3" id="pass" name="senha" autocomplete="off" placeholder="Password" /><span class="text-error" id="error-pass"></span></li>
+				<li><input type="password" class="span3" id="passcheck" autocomplete="off" name="senhacheck" placeholder="Repita o Password" /><span class="text-success" id="acert-pass"></span></li>
 				<li><div id="div-input-file">
 	            	<input name="foto" accept="image/*" type="file" size="10" id="file-original" onchange="abreURL(this);"/>
 	            	<div id="div-input-falso">
@@ -52,12 +52,10 @@
 			<h4>Musicas</h4>
 			<c:forEach items="${user.musicas }" var="musica">
 			<a href="musica.do?action=show&id=${musica.id }">${musica.nome }</a>
-			<div class="playdiv">
-				<a class="play" href="music.do?id=${musica.id}&action=play"><i class="icon-play" ></i></a>
-			</div>
-			<div class="stopdiv" style="display: none;">
-				<a class="stop" href="music.do?action=stop" disabled ><i class="icon-stop" ></i></a>
-			</div>			
+			<audio controls>
+				<source src="${musica.caminhoarq }" type="audio/mp3"></source>					
+				Seu navegador nao tem suporte html5 audio.
+			</audio>		
 			</c:forEach>
 			${user.datacriado }
 	</div>
@@ -75,18 +73,24 @@
 			<ul class="nav">						
 				<li>
 					<div id="div-input-file">
-		            	<input name="musica" accept="audio/*" type="file" size="10" id="file-original" onchange="abreURL(this);"/>
+		            	<input name="musica" accept="audio/*" type="file" size="10" id="file-original" onchange="abreId3(this);"/>
 		            	<div id="div-input-falso">
 		            		<input name="file-falso" type="text" id="musica" class="span3" placeholder="Arquivo da Musica"/>
 		          		</div>
 		        	</div>
-	        	</li> <br>        	
+	        	</li> 
+	        	<br>        	
 	        	<li><input type="hidden" name="action" value="create" /></li>
-				<li><input type="text" class="span3" id="tit" name="nome" disabled placeholder="Titulo" /> </li>
-				<li><input type="text" class="span3" id="est" name="estilo" disabled placeholder="Estilo" /></li>				
-				<li><input type="text" class="span3" id="alb" name="album" disabled placeholder="Album"/><br></li>
-				<li><input type="text" class="span3" id="aut" name="autor" disabled placeholder="Autor"/><br></li>			        
+				<li><input type="text" autocomplete="off" class="span3" id="tit" name="nome" disabled placeholder="Titulo" /> </li>
+				<li>
+					<select autocomplete="off" class="span3" id="est" name="estilo" disabled placeholder="Estilo" >
+				
+					</select>
+				</li>				
+				<li><input type="text" autocomplete="off" class="span3" id="alb" name="album" disabled placeholder="Album"/><br></li>
+				<li><input type="text" autocomplete="off" class="span3" id="aut" name="autor" disabled placeholder="Autor"/><br></li>			        
 				<li><input type="submit" class="btn btn-danger" value="Concluir!" /></li>
+				<li><span id="#erro_musica"></span> </li>
 			</ul>
 	</form>
 	</div>

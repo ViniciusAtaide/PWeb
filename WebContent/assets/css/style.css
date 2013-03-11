@@ -1,10 +1,4 @@
 @CHARSET "ISO-8859-1";
-      #div-input-file{
-          background:url(assets/img/default-user-image.png) no-repeat 100% 1px;
-          height:28px;
-          width:355px;
-          margin:0px;
-      }
       #div-input-file #file-original{
           opacity: 0.0;
           -moz-opacity: 0.0;

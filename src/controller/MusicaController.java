@@ -1,8 +1,6 @@
 package controller;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import model.Album;
 import model.Autor;
 import model.Estilo;
@@ -39,18 +35,16 @@ import dao.DAOMusica;
 public class MusicaController extends HttpServlet {
 	private String forward;
 	private File file;
-	private FileInputStream f;
-	private BufferedInputStream buffer;
 	private String filepath;
 	private String caminho;
 	private String n;
 
 	private enum action {
-		delete, create, update, search, show;
+		delete, create, update, search, show, play;
 	}
 
 	private DAOMusica mudao;
-
+	private DAOMiniPost minidao;
 	private static final long serialVersionUID = 1L;
 	private static String URL = "index.jsp";
 
@@ -75,16 +69,8 @@ public class MusicaController extends HttpServlet {
 		if (request.getParameter("id") != null) {
 			id = Integer.parseInt(request.getParameter("id"));
 			m = mudao.find(id);
-			String arq = caminho + mudao.find(id).getCaminhoarq().substring(14);
-			file = new File(arq);
-			f = new FileInputStream(file);
-			buffer = new BufferedInputStream(f);
 		}
-
-		Player p;
 		try {
-			p = new Player(buffer);
-
 			mudao.begin();
 
 			switch (action.valueOf(a)) {
@@ -102,11 +88,33 @@ public class MusicaController extends HttpServlet {
 				request.setAttribute("music", m);
 				forward = "music.jsp";
 				break;
-
-				default:
+			case play:
+				
+				Usuario sessionuser = (Usuario) session.getAttribute("user"); 
+				if (sessionuser != null) {
+					minidao = new DAOMiniPost();
+					String autores = "";
+					if (m.getAutores().size()!=1) {
+						for (Autor au : m.getAutores()) {	
+							autores += au.getNome() + ", ";						
+						}
+					}
+					else {
+						autores = m.getAutores().get(1).getNome();
+					}
+					String titulo = sessionuser.getLogin() + "esta escutando" + m.getNome();
+					String conteudo = "Estilo: "+m.getEstilo()+"\nAlbum: "+m.getAlbum()+"\nAutores: "+autores;
+					MiniPost mp = new MiniPost(conteudo, titulo, m, sessionuser);
+					minidao.begin();
+					minidao.persist(mp);
+					minidao.commit();
+					minidao.close();
+				}
+			default:
 				break;
 			}
-		} catch (JavaLayerException e1) {
+			
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		mudao.commit();
