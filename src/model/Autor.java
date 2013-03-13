@@ -35,6 +35,11 @@ public class Autor {
 		this.nome = nome;
 	}
 
+	public Autor(String nome, String sobre) {
+		this.nome = nome;
+		this.sobre = sobre;
+	}
+
 	public int getId() {
 		return id;
 	}

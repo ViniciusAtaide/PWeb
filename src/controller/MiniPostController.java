@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,14 +48,18 @@ public class MiniPostController extends HttpServlet {
 				minidao.remove(m);
 				request.setAttribute("content_message", "MiniPost Removido");
 			} catch(Exception e) {
-				request.setAttribute("error_message", "MiniPost j� removido");
+				request.setAttribute("error_message", "MiniPost ja removido");
 			}
 			break;
 		default:
 			break;
 		}
-		minidao.commit();
-		minidao.close();
+		try {
+			minidao.commit();
+			minidao.close();
+		} catch (PersistenceException e) {
+			request.setAttribute("error_message", "Erro na transacao.");
+		}
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 

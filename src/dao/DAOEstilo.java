@@ -1,7 +1,5 @@
 package dao;
 
-import java.util.List;
-
 import model.Estilo;
 
 public class DAOEstilo extends DAOJPA<Estilo> {
@@ -10,8 +8,10 @@ public class DAOEstilo extends DAOJPA<Estilo> {
 	}
 
 	
-	// consultas específicas
-	public List<Estilo> findByNome(String nome) {
-		return super.findByField("nome", nome);
+	// consultas especificas
+	public Estilo findByNome(String nome) {
+		if (super.findByField("nome", nome).isEmpty())
+			return null;
+		return super.findByField("nome", nome).get(0);
 	}
 }

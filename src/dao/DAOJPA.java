@@ -61,7 +61,7 @@ public class DAOJPA<T> implements DAOInterface<T> {
 		Class<T> type = (Class<T>) ((ParameterizedType) this.getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
 		Query query = getManager().createQuery("select x from " + type.getSimpleName() + " x " +
-				"where x.� "+campo+" � like \"" +valor+ "\"");
+				"where x."+campo+" like \"" +valor+ "\"");
 		return (List<T>) query.getResultList();
 	}
 	

@@ -36,7 +36,7 @@ public class UsuarioController extends HttpServlet {
 	private File file;
 	private DAOUsuario udao;
 	private static final long serialVersionUID = 1L;
-	private static String URL = "index.jsp";
+	private static String URL = "user.jsp";
 
 	public UsuarioController() {
 		super();
@@ -64,8 +64,7 @@ public class UsuarioController extends HttpServlet {
 				request.setAttribute("users", udao.findAll());
 				break;
 			case show:
-				request.setAttribute("user", u);
-				forward = URL + "#showuser";
+				request.setAttribute("usu", u);			
 				break;
 			case logoff:
 				session.setAttribute("user", null);
@@ -93,11 +92,11 @@ public class UsuarioController extends HttpServlet {
 		getDAOUsuario();
 
 		udao.begin();
-
+		
 		if (ServletFileUpload.isMultipartContent(request)) {
 			FileItemFactory factory = new DiskFileItemFactory();
-			ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setFileSizeMax(10240000);
+				ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(20*1024*1024);
 
 			try {
 				List<FileItem> lista = upload.parseRequest(request);
@@ -115,7 +114,7 @@ public class UsuarioController extends HttpServlet {
 							a = valor;
 						}
 					} else {
-						nome = item.getName();
+						nome = item.getName().replace(" ", "");
 						if (item.getFieldName().lastIndexOf("\\") >= 0) {
 							file = new File(caminho + nome.substring(nome.lastIndexOf("\\")));
 						} else {
@@ -136,6 +135,10 @@ public class UsuarioController extends HttpServlet {
 			pass = request.getParameter("senha");
 			a = request.getParameter("action");
 		}
+		
+		
+		///
+		
 		switch (action.valueOf(a)) {
 
 		case login:
@@ -166,9 +169,7 @@ public class UsuarioController extends HttpServlet {
 				}
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
-				e.printStackTrace();
-			} catch (PersistenceException e) {
-				request.setAttribute("error_message", "Usuario ja existente");
+				e.printStackTrace();			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -178,9 +179,13 @@ public class UsuarioController extends HttpServlet {
 			request.setAttribute("userssearch", udao.findByLogin(login));
 		default:
 			break;
+		} 
+		try {
+			udao.commit();
+			udao.close();
+		} catch (PersistenceException e) {
+			request.setAttribute("error_message", "Usuario ja existente");
 		}
-		udao.commit();
-		udao.close();
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 

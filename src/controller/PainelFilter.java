@@ -10,17 +10,16 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import dao.DAOAlbum;
-import dao.DAOAutor;
-import dao.DAOEstilo;
+import model.Usuario;
 
 @WebFilter(dispatcherTypes = {DispatcherType.REQUEST }
 					, urlPatterns = { "/painel.jsp" })
 public class PainelFilter implements Filter {
-	private DAOAutor ardao;
-	private DAOEstilo esdao;
-	private DAOAlbum aldao;
+
 	
     public PainelFilter() {
     }
@@ -28,14 +27,22 @@ public class PainelFilter implements Filter {
 	public void destroy() {
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {		
-		request.setAttribute("artists", ardao.findAll());
-		request.setAttribute("styles", esdao.findAll());
-		request.setAttribute("albums", aldao.findAll());
-		chain.doFilter(request, response);
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		
+		HttpSession session = req.getSession();
+		Usuario u = (Usuario)session.getAttribute("user");
+		try {
+		if( !(u.getLogin().equals(req.getServletContext().getInitParameter("admlogin")))) {
+			res.sendRedirect("index.jsp");
+			req.setAttribute("error_message", "Usuario não qualificado para tal ato");
+		} else		
+			chain.doFilter(request, response);
+		} catch (NullPointerException e) {
+			res.sendRedirect("index.jsp");
+			req.setAttribute("error_message", "Usuario não qualificado para tal ato");
+		}
 	}
 	public void init(FilterConfig fConfig) throws ServletException {
-		ardao = new DAOAutor();
-		esdao = new DAOEstilo();
-		aldao = new DAOAlbum();
 	}
 }

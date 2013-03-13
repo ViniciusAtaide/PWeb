@@ -26,6 +26,9 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import dao.DAOAlbum;
+import dao.DAOAutor;
+import dao.DAOEstilo;
 import dao.DAOMiniPost;
 import dao.DAOModerador;
 import dao.DAOMusica;
@@ -45,8 +48,11 @@ public class MusicaController extends HttpServlet {
 
 	private DAOMusica mudao;
 	private DAOMiniPost minidao;
+	private DAOEstilo edao;
+	private DAOAutor audao;
+	private DAOAlbum aldao;
 	private static final long serialVersionUID = 1L;
-	private static String URL = "index.jsp";
+	private static String URL = "music.jsp";
 
 	public MusicaController() {
 		super();
@@ -76,44 +82,47 @@ public class MusicaController extends HttpServlet {
 			switch (action.valueOf(a)) {
 			case delete:
 				mudao.remove(m);
+				forward = "index.jsp";
 				request.setAttribute("content_message",
 						"Musica removida com sucesso");
 				break;
 			case search:
 				request.setAttribute("result", mudao.findByNome(busca));
-				forward = "music.jsp";
-				request.setAttribute("success-message", "Resultado da busca");
+				request.setAttribute("success_message", "Resultado da busca");
 				break;
 			case show:
 				request.setAttribute("music", m);
-				forward = "music.jsp";
 				break;
 			case play:
-				
-				Usuario sessionuser = (Usuario) session.getAttribute("user"); 
+
+				Usuario sessionuser = (Usuario) session.getAttribute("user");
 				if (sessionuser != null) {
 					minidao = new DAOMiniPost();
 					String autores = "";
-					if (m.getAutores().size()!=1) {
-						for (Autor au : m.getAutores()) {	
-							autores += au.getNome() + ", ";						
+					if (m.getAutores().size() != 1) {
+						for (Autor au : m.getAutores()) {
+							autores += au.getNome() + ", ";
 						}
-					}
-					else {
+					} else {
 						autores = m.getAutores().get(1).getNome();
 					}
-					String titulo = sessionuser.getLogin() + "esta escutando" + m.getNome();
-					String conteudo = "Estilo: "+m.getEstilo()+"\nAlbum: "+m.getAlbum()+"\nAutores: "+autores;
+					String titulo = sessionuser.getLogin() + "esta escutando"
+							+ m.getNome();
+					String conteudo = "Estilo: " + m.getEstilo() + "\nAlbum: "
+							+ m.getAlbum() + "\nAutores: " + autores;
 					MiniPost mp = new MiniPost(conteudo, titulo, m, sessionuser);
 					minidao.begin();
 					minidao.persist(mp);
 					minidao.commit();
 					minidao.close();
+					request.setAttribute("music_message", "Escutando trilha "
+							+ m.getNome());
 				}
+				forward = "index.jsp";
 			default:
 				break;
 			}
-			
+
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -137,11 +146,14 @@ public class MusicaController extends HttpServlet {
 		mudao = new DAOMusica();
 		mudao.begin();
 		DAOModerador modao = new DAOModerador();
+		edao = new DAOEstilo();
+		aldao = new DAOAlbum();
+		audao = new DAOAutor();
 		if (ServletFileUpload.isMultipartContent(request)) {
 
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setFileSizeMax(20485760);
+			upload.setFileSizeMax(20 * 1024 * 1024);
 			try {
 				@SuppressWarnings("unchecked")
 				List<FileItem> lista = upload.parseRequest(request);
@@ -164,7 +176,7 @@ public class MusicaController extends HttpServlet {
 							autor = valor;
 						}
 					} else {
-						n = item.getName();
+						n = item.getName().replace(" ", "");
 						if (item.getFieldName().lastIndexOf("\\") >= 0) {
 							file = new File(caminho
 									+ n.substring(n.lastIndexOf("\\")));
@@ -193,11 +205,22 @@ public class MusicaController extends HttpServlet {
 		switch (action.valueOf(a)) {
 		case create:
 			Usuario us = (Usuario) session.getAttribute("user");
+			Autor au = null;
+			Estilo es = null;
+			Musica mus = null;
+			Album al = null;
 			try {
-				Autor au = new Autor(autor);
-				Estilo es = new Estilo(estilo, "");
-				Album al = new Album(album, "");
-				Musica mus = null;
+				if (audao.findByNome(autor) == null) {
+					au = new Autor(autor);
+				} else {
+					au = audao.findByNome(autor);
+				}
+				if (aldao.findByNome(album) == null) {
+					al = new Album(album, "");
+				} else {
+					al = aldao.findByNome(album);
+				}
+				es = edao.find(Integer.parseInt(estilo));
 				if (!(modao.find(1).getLogin().equals(us.getLogin()))) {
 					mus = new Musica(nome, filepath, us);
 				} else {
@@ -215,7 +238,12 @@ public class MusicaController extends HttpServlet {
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 				e.printStackTrace();
+			} catch (Exception e) {
+				request.setAttribute("error_message",
+						"Campo com valor não corretamente formatado.");
+				e.printStackTrace();
 			}
+			forward = "index.jsp";
 			break;
 		default:
 			break;
@@ -224,7 +252,7 @@ public class MusicaController extends HttpServlet {
 			mudao.commit();
 			mudao.close();
 		} catch (PersistenceException e) {
-			request.setAttribute("error_message", "Falha na transa��o");
+			request.setAttribute("error_message", "Falha na transação");
 		}
 		request.getRequestDispatcher(forward).forward(request, response);
 	}

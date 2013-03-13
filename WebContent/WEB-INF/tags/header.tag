@@ -1,12 +1,15 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ attribute name="titulo" required="true" rtexprvalue="true" %>
+<%@ attribute name="path" required="true" %>
+<%@ attribute name="busca" required="true" %>
+<%@ attribute name="nome" required="true" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="charset=utf-8">
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<link href="assets/css/style.css" rel="stylesheet">
-<link href="assets/css/bootstrap.css" rel="stylesheet">
-<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="${path }style.css" rel="stylesheet">
+<link href="${path }bootstrap.css" rel="stylesheet">
+<link href="${path }bootstrap-responsive.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${titulo }</title>
 </head>
@@ -17,8 +20,7 @@
 				<div class="container pagination-centered">
 					<button type="button" class="btn btn-navbar" data-toggle="collapse"
 						data-target=".nav-collapse">
-						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
 					<a class="brand" href="index.jsp">Projeto</a>
 					<c:if test="${user.login eq 'administrador' }">
@@ -38,11 +40,10 @@
 						</c:if>
 						<c:if test="${sessionScope.user eq null }">
 							<form class="navbar-form pull-right" action="user.do" method="post" accept-charset="utf-8">
-								<input type="text" class="span2" name="login"
-									placeholder="Login"> <input type="password"
-									class="span2" name="senha" placeholder="Pass"> <input
-									type="hidden" name="action" value="login" /> <input
-									type="submit" class="btn btn-primary" value="Go!">
+								<input type="text" class="span2" name="login" placeholder="Login" /> 
+								<input type="password" class="span2" name="senha" placeholder="Pass" /> 
+								<input type="hidden" name="action" value="login" /> 
+								<input type="submit" class="btn btn-primary" value="Go!">
 							</form>
 							<ul class="nav pull-right">
 								<li><a href="#cadastro" data-toggle="modal">Registrar</a></li>
@@ -51,9 +52,9 @@
 
 						<ul class="nav pull-right">
 							<li>
-								<form action="musica.do" method="get" class="form-search navbar-form">
+								<form action="${busca}.do" method="get" class="form-search navbar-form">							
 									<div class="input-append">
-										<input type="search" class="input-medium search-query span2" name="busca" id="appendInputButton" placeholder="Buscar Música" /> 
+										<input type="search" class="input-medium search-query span2" name="busca" id="appendInputButton" placeholder="Buscar ${nome}" /> 
 										<input type="hidden" name="action" value="search" />
 										<button type="submit" class="btn">
 											<i class="icon-search"></i>
@@ -66,7 +67,11 @@
 				</div>
 			</div>
 		</div>
-
-		<br> <br>
-		<p class="text-error pagination-centered" id="error-message">${requestScope.error_message}</p>
-		<p class="text-success pagination-centered" id="success-message">${requestScope.content_message}</p>		
+		
+		<div class="pagination-centered">
+			<br>
+			<br>			
+			<span class="text-error" id="error-message">${requestScope.error_message}</span>
+			<span class="text-success" id="success-message">${requestScope.content_message}</span>
+		</div>
+		

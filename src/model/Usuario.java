@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +39,7 @@ public class Usuario {
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "usuarios")
 	private List<Musica> musicas = new ArrayList<Musica>();
 
+	
 	private String caminhofoto;
 
 	public Usuario() {
@@ -50,7 +52,7 @@ public class Usuario {
 	}
 
 
-	public Usuario(String login, String senha, String caminhofoto) {
+	public Usuario(String login, String senha, String caminhofoto) throws IOException {
 		super();
 		this.login = login;
 		this.senha = senha;
@@ -62,12 +64,18 @@ public class Usuario {
 		return id;
 	}
 
+	public String getCaminhofoto() {
+		return caminhofoto;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	public String getLogin() {
 		return login;
+	}
+	public void setCaminhofoto(String caminhofoto) {
+		this.caminhofoto = caminhofoto;
 	}
 
 	public void setLogin(String login) {
@@ -119,14 +127,6 @@ public class Usuario {
 	public void removeMiniPost(MiniPost minipost) {
 		miniposts.remove(minipost);
 
-	}
-
-	public String getCaminhofoto() {
-		return caminhofoto;
-	}
-
-	public void setCaminhofoto(String caminhofoto) {
-		this.caminhofoto = caminhofoto;
 	}
 
 }
