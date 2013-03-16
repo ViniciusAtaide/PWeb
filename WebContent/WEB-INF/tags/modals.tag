@@ -108,10 +108,10 @@
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3 id="CadastrarAutor">Novo Autor</h3>
-	</div>
+	</div>	
 	<div class="modal-body">
 		<form action="author.do" method="post" accept-charset="iso-8859-1,utf-8">
-			<input type="hidden" name="action" value="create" />
+			<input type="hidden" name="action" 	value="create" />
 			<ul class="nav">										
 				<li><input type="text" autocomplete="off" class="span3" name="nome" placeholder="Nome do Artista" /> </li>				
 				<li><input type="text" autocomplete="off" class="span3" name="sobre" placeholder="Sobre"/><br></li>
@@ -156,4 +156,3 @@
 	</form>
 	</div>
 </div>
-				

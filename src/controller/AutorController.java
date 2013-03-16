@@ -13,7 +13,7 @@ import model.Autor;
 import dao.DAOAutor;
 
 @WebServlet("/author.do")
-public class AutorController extends HttpServlet {
+public class AutorController extends HttpServlet {	
 	private static final long serialVersionUID = 1L;
 	private enum action {
 		delete,	create, update, show;
@@ -55,6 +55,7 @@ public class AutorController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Erro na transacao.");
 		}
+		getServletContext().setAttribute("autors", audao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 	
@@ -62,7 +63,7 @@ public class AutorController extends HttpServlet {
 		String a = request.getParameter("action");
 		String nome = request.getParameter("nome");
 		String sobre = request.getParameter("sobre");
-		
+		String forward = URL;		
 		audao = new DAOAutor();
 		audao.begin();
 		switch (action.valueOf(a)) {
@@ -91,6 +92,8 @@ public class AutorController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Erro na transacao.");
 		}
+		getServletContext().setAttribute("autors", audao.findAll());		
+		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
 }

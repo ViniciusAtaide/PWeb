@@ -66,6 +66,7 @@ public class EstiloController extends HttpServlet {
 		} catch (PersistenceException e2 ) {
 			request.setAttribute("error_message", "Erro na transacao");
 		}
+		getServletContext().setAttribute("styles", edao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
@@ -83,15 +84,15 @@ public class EstiloController extends HttpServlet {
 				if(edao.findByNome(nome) == null) {
 					Estilo estilo = new Estilo(nome, sobre);
 					edao.persist(estilo);
-					request.setAttribute("content_message", "Estilo criado com sucesso");
+					request.setAttribute("content_message", "Estilo criado com sucesso");					
 				} else {
-					System.out.println("a");
 					request.setAttribute("error_message", "Estilo ja existente");
 				}
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 				e.printStackTrace();
 			}
+			
 			forward = "painel.jsp";
 			break;
 		default:
@@ -103,6 +104,7 @@ public class EstiloController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Estilo ja existente.");
 		}
+		getServletContext().setAttribute("styles", edao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 }

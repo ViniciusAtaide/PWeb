@@ -34,7 +34,7 @@
 						<c:if test="${sessionScope.user ne null }">
 							<div class="nav pull-right span5">
 								<a href="user.do?action=logoff" class="btn btn-danger">LogOff</a>
-								<img src="${user.caminhofoto }" height="30" width="30" alt=" Perfil" />
+								<img src="${user.caminhofoto }" height="30" width="30" alt=" P	erfil" />
 								Bem-vindo <a href="#showuser" data-toggle="modal">${user.login}</a>
 							</div>
 						</c:if>
@@ -66,12 +66,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		
-		<div class="pagination-centered">
-			<br>
-			<br>			
-			<span class="text-error" id="error-message">${requestScope.error_message}</span>
-			<span class="text-success" id="success-message">${requestScope.content_message}</span>
-		</div>
+		</div>		
+
 		

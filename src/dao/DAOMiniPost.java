@@ -13,7 +13,7 @@ public class DAOMiniPost extends DAOJPA<MiniPost> {
 	
 	@SuppressWarnings("unchecked")
 	public List<MiniPost> findByDataPostado() {
-		List<MiniPost> lista = super.findAllByQuery("select m from Minipost m order by m.tempopost"); 
+		List<MiniPost> lista = super.findAllByQuery("select m from Minipost m order by m.tempopost asc"); 
 		return lista;
 	}
 }

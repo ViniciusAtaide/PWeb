@@ -43,7 +43,7 @@ public class MusicaController extends HttpServlet {
 	private String n;
 
 	private enum action {
-		delete, create, update, search, show, play;
+		delete, create, update, search, show, play,showstyles;
 	}
 
 	private DAOMusica mudao;
@@ -66,6 +66,7 @@ public class MusicaController extends HttpServlet {
 		caminho = getServletContext().getInitParameter("file-upload");
 		filepath = getServletContext().getInitParameter("file-path");
 		mudao = new DAOMusica();
+		edao = new DAOEstilo();
 		forward = URL;
 		HttpSession session = request.getSession();
 		String a = request.getParameter("action");
@@ -80,11 +81,11 @@ public class MusicaController extends HttpServlet {
 			mudao.begin();
 
 			switch (action.valueOf(a)) {
-			case delete:
+			
+			case delete:				
 				mudao.remove(m);
 				forward = "index.jsp";
-				request.setAttribute("content_message",
-						"Musica removida com sucesso");
+				request.setAttribute("content_message","Musica removida com sucesso");
 				break;
 			case search:
 				request.setAttribute("result", mudao.findByNome(busca));
@@ -104,35 +105,39 @@ public class MusicaController extends HttpServlet {
 							autores += au.getNome() + ", ";
 						}
 					} else {
-						autores = m.getAutores().get(1).getNome();
+						autores = m.getAutores().get(0).getNome();
 					}
-					String titulo = sessionuser.getLogin() + "esta escutando"
+					String titulo = sessionuser.getLogin() + " escutou "
 							+ m.getNome();
-					String conteudo = "Estilo: " + m.getEstilo() + "\nAlbum: "
-							+ m.getAlbum() + "\nAutores: " + autores;
+					String conteudo = "Estilo: " + m.getEstilo().getNome() + "\nAlbum: "
+							+ m.getAlbum().getNome() + "\nAutores: " + autores;
 					MiniPost mp = new MiniPost(conteudo, titulo, m, sessionuser);
 					minidao.begin();
 					minidao.persist(mp);
 					minidao.commit();
 					minidao.close();
-					request.setAttribute("music_message", "Escutando trilha "
-							+ m.getNome());
+					request.setAttribute("music_message", "Escutando trilha "+ m.getNome());
 				}
 				forward = "index.jsp";
+				break;
 			default:
 				break;
 			}
 
 		} catch (Exception e1) {
+			request.setAttribute("error_message", "Erro");
 			e1.printStackTrace();
 		}
-		mudao.commit();
-		mudao.close();
+		try {
+			mudao.commit();
+			mudao.close();
+		} catch (PersistenceException e) {
+			request.setAttribute("error_message", "Erro na operação");
+		}		
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		caminho = getServletContext().getInitParameter("file-upload");
 		filepath = getServletContext().getInitParameter("file-path");
 		String a = null;
@@ -150,7 +155,6 @@ public class MusicaController extends HttpServlet {
 		aldao = new DAOAlbum();
 		audao = new DAOAutor();
 		if (ServletFileUpload.isMultipartContent(request)) {
-
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			upload.setFileSizeMax(20 * 1024 * 1024);
@@ -176,19 +180,19 @@ public class MusicaController extends HttpServlet {
 							autor = valor;
 						}
 					} else {
-						n = item.getName().replace(" ", "");
-						if (item.getFieldName().lastIndexOf("\\") >= 0) {
-							file = new File(caminho
-									+ n.substring(n.lastIndexOf("\\")));
-
+						n = item.getName().replace(" ", "_");			
+						
+						if (item.getFieldName().lastIndexOf("\\") >= 0) {							
+							file = new File(caminho + n.substring(n.lastIndexOf("\\")));
 						} else {
-							file = new File(caminho
-									+ n.substring(n.lastIndexOf("\\") + 1));
+							file = new File(caminho + n.substring(n.lastIndexOf("\\") + 1));
 						}
 						if (nome != "") {
 							filepath += n;
 						}
 						item.write(file);
+						String comando = "/bin/bash -c \"sox "+caminho+n+" "+caminho+n.substring(0,n.indexOf("."))+ ".ogg\"";
+						Runtime.getRuntime().exec(comando).waitFor();
 					}
 				}
 			} catch (Exception e) {
@@ -202,6 +206,7 @@ public class MusicaController extends HttpServlet {
 			estilo = request.getParameter("estilo");
 			album = request.getParameter("album");
 		}
+		
 		switch (action.valueOf(a)) {
 		case create:
 			Usuario us = (Usuario) session.getAttribute("user");
@@ -210,31 +215,35 @@ public class MusicaController extends HttpServlet {
 			Musica mus = null;
 			Album al = null;
 			try {
-				if (audao.findByNome(autor) == null) {
-					au = new Autor(autor);
-				} else {
-					au = audao.findByNome(autor);
+				if (!(mudao.findByNome(nome).isEmpty())) {
+					mudao.findByNome(nome).get(0).addUsuario(us);
+				} else { 											
+					if (audao.findByNome(autor) == null) {
+						au = new Autor(autor);
+					} else {
+						au = audao.findByNome(autor);
+					}
+					if (aldao.findByNome(album) == null) {
+						al = new Album(album, "");
+					} else {
+						al = aldao.findByNome(album);
+					}
+					es = edao.find(Integer.parseInt(estilo));
+					if (!(modao.find(1).getLogin().equals(us.getLogin()))) {
+						mus = new Musica(nome, filepath, us);
+					} else {
+						mus = new Musica(nome, filepath);
+					}
+					mus.addAutor(au);
+					au.addMusica(mus);
+					mus.setEstilo(es);
+					es.addMusica(mus);
+					mus.setAlbum(al);
+					al.addMusica(mus);
+					mudao.flush();
+					mudao.persist(mus);					
 				}
-				if (aldao.findByNome(album) == null) {
-					al = new Album(album, "");
-				} else {
-					al = aldao.findByNome(album);
-				}
-				es = edao.find(Integer.parseInt(estilo));
-				if (!(modao.find(1).getLogin().equals(us.getLogin()))) {
-					mus = new Musica(nome, filepath, us);
-				} else {
-					mus = new Musica(nome, filepath);
-				}
-				mus.addAutor(au);
-				au.addMusica(mus);
-				mus.setEstilo(es);
-				es.addMusica(mus);
-				mus.setAlbum(al);
-				al.addMusica(mus);
-				mudao.persist(mus);
-				request.setAttribute("content_message",
-						"Música cadastrada com sucesso");
+				request.setAttribute("content_message", "Música cadastrada com sucesso");
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
 				e.printStackTrace();

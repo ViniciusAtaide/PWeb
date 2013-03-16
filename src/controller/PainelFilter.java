@@ -15,13 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.Usuario;
+import dao.DAOAutor;
+import dao.DAOEstilo;
 
 @WebFilter(dispatcherTypes = {DispatcherType.REQUEST }
 					, urlPatterns = { "/painel.jsp" })
 public class PainelFilter implements Filter {
 
-	
+	DAOAutor audao;
+	DAOEstilo edao;
     public PainelFilter() {
+    	audao = new DAOAutor();
+    	edao = new DAOEstilo();
     }
 
 	public void destroy() {
@@ -35,12 +40,15 @@ public class PainelFilter implements Filter {
 		try {
 		if( !(u.getLogin().equals(req.getServletContext().getInitParameter("admlogin")))) {
 			res.sendRedirect("index.jsp");
-			req.setAttribute("error_message", "Usuario não qualificado para tal ato");
-		} else		
+			req.setAttribute("error_message", "Permissão negada.");
+		} else	{	
+			req.setAttribute("authors", audao.findAll());
+			req.setAttribute("styles", edao.findAll());
 			chain.doFilter(request, response);
+		}
 		} catch (NullPointerException e) {
 			res.sendRedirect("index.jsp");
-			req.setAttribute("error_message", "Usuario não qualificado para tal ato");
+			req.setAttribute("error_message", "Permissão negada.");
 		}
 	}
 	public void init(FilterConfig fConfig) throws ServletException {

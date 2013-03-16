@@ -23,7 +23,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import dao.DAOModerador;
 import dao.DAOUsuario;
 
-@WebServlet(urlPatterns = { "/user.do" })
+@WebServlet(urlPatterns = { "/user.do", "/usuario/user.do" })
 public class UsuarioController extends HttpServlet {
 
 	private enum action {
@@ -36,7 +36,7 @@ public class UsuarioController extends HttpServlet {
 	private File file;
 	private DAOUsuario udao;
 	private static final long serialVersionUID = 1L;
-	private static String URL = "user.jsp";
+	private static String URL = "/usuario/user.jsp";
 
 	public UsuarioController() {
 		super();
@@ -57,46 +57,47 @@ public class UsuarioController extends HttpServlet {
 			u = udao.find(id);
 		}
 		udao.begin();
-		
+
 		switch (action.valueOf(a)) {
-			case delete:
-				udao.remove(u);
-				request.setAttribute("users", udao.findAll());
-				break;
-			case show:
-				request.setAttribute("usu", u);			
-				break;
-			case logoff:
-				session.setAttribute("user", null);
-				session.invalidate();
-				request.setAttribute("content_message", "Logoff concluido!");
-				forward = "index.jsp";
-			default:
-				break;
+		case delete:
+			udao.remove(u);
+			request.setAttribute("users", udao.findAll());
+			break;
+		case show:
+			request.setAttribute("usu", u);
+			break;
+		case logoff:
+			session.setAttribute("user", null);
+			session.invalidate();
+			request.setAttribute("content_message", "Logoff concluido!");
+			forward = "index.jsp";
+		default:
+			break;
 		}
 		udao.commit();
 		udao.close();
+		getServletContext().setAttribute("users", udao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		caminho = getServletContext().getInitParameter("file-upload");
-		filepath = getServletContext().getInitParameter("file-path");		
+		filepath = getServletContext().getInitParameter("file-path");
 		DAOModerador modao = new DAOModerador();
 		String a = null;
 		String login = null;
-		String pass = null;
-		HttpSession session = request.getSession();
+		String pass = null;		
 		String forward = "index.jsp";
 		getDAOUsuario();
 
 		udao.begin();
-		
+
 		if (ServletFileUpload.isMultipartContent(request)) {
 			FileItemFactory factory = new DiskFileItemFactory();
-				ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setFileSizeMax(20*1024*1024);
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(20 * 1024 * 1024);
 
 			try {
 				List<FileItem> lista = upload.parseRequest(request);
@@ -116,9 +117,13 @@ public class UsuarioController extends HttpServlet {
 					} else {
 						nome = item.getName().replace(" ", "");
 						if (item.getFieldName().lastIndexOf("\\") >= 0) {
-							file = new File(caminho + nome.substring(nome.lastIndexOf("\\")));
+							file = new File(caminho
+									+ nome.substring(nome.lastIndexOf("\\")));
 						} else {
-							file = new File(caminho + nome.substring(nome.lastIndexOf("\\") + 1));
+							file = new File(
+									caminho
+											+ nome.substring(nome
+													.lastIndexOf("\\") + 1));
 						}
 						if (nome != "") {
 							filepath += nome;
@@ -135,21 +140,23 @@ public class UsuarioController extends HttpServlet {
 			pass = request.getParameter("senha");
 			a = request.getParameter("action");
 		}
-		
-		
-		///
-		
+
+		// /
+
 		switch (action.valueOf(a)) {
 
 		case login:
 			try {
 				Usuario u = udao.findByLogin(login);
-				if (pass.equals(u.getSenha()) || (!(modao.find(1).getLogin().equals(login)) && (!(modao.find(1).getSenha().equals(pass))))) {
+				if (pass.equals(u.getSenha())
+						|| (!(modao.find(1).getLogin().equals(login)) && (!(modao
+								.find(1).getSenha().equals(pass))))) {
+					HttpSession session = request.getSession();
 					session.setAttribute("user", u);
 					request.setAttribute("content_message", "Login concluido!");
 					forward = "index.jsp";
 				} else {
-					request.setAttribute("error_message", "Senha Incorreta");					
+					request.setAttribute("error_message", "Senha Incorreta");
 				}
 			} catch (Exception e) {
 				request.setAttribute("error_message", "Usuario Nao Encontrado");
@@ -158,18 +165,22 @@ public class UsuarioController extends HttpServlet {
 			break;
 		case create:
 			try {
-				if (udao.findByLogin(login) == null || !(modao.find(1).getLogin().equals(login)) ) {
+				if (udao.findByLogin(login) == null
+						|| !(modao.find(1).getLogin().equals(login))) {
 					Usuario user = new Usuario(login, pass, filepath);
 					udao.persist(user);
+					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
 					forward = "index.jsp";
-					request.setAttribute("content_message", "Usuario cadastrado com sucesso");
+					request.setAttribute("content_message",
+							"Usuario cadastrado com sucesso");
 				} else {
-					request.setAttribute("error_message", "Usuario ja cadastrado");
+					request.setAttribute("error_message",
+							"Usuario ja cadastrado");
 				}
 			} catch (NullPointerException e) {
 				request.setAttribute("error_message", "Preencha algum campo");
-				e.printStackTrace();			
+				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -179,14 +190,16 @@ public class UsuarioController extends HttpServlet {
 			request.setAttribute("userssearch", udao.findByLogin(login));
 		default:
 			break;
-		} 
+		}
 		try {
 			udao.commit();
 			udao.close();
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Usuario ja existente");
 		}
+		getServletContext().setAttribute("users", udao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
+		
 	}
 
 	private DAOUsuario getDAOUsuario() {

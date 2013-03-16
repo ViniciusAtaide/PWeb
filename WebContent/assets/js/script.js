@@ -1,6 +1,4 @@
-$(document).ready(function() {
-	
-	
+$(document).ready(function() {	
 	// CHECAGEM DE SENHA
 
 	$("#pass").on('keyup',	function() {

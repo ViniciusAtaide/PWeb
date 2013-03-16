@@ -8,7 +8,7 @@
 	<div class="hero-unit">
 		<div class="row">
 			<v:minipost tamanho="span3" />
-			<v:music tamanho="span3" />
+			<v:music tamanho="span3" player="false" />
 			<v:author tamanho="span2" />	
 			<v:style tamanho="span2" />							
 		</div>

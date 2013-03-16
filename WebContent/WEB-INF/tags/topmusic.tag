@@ -4,7 +4,7 @@
 <div class="${tamanho }">
 	<h3>Top Musicas</h3>
 	<c:if test="${user ne null }">
-				<a class="btn btn-large btn-primary" href="#cadastromusica" data-toggle="modal">Adicionar Música</a>				
+		<a class="btn btn-large btn-primary" href="#cadastromusica" data-toggle="modal">Adicionar Música</a>				
 	</c:if>
 	<c:if test="${empty topmusics}">
 		<h4 class="text-info">Não há nenhuma música</h4>
@@ -20,10 +20,14 @@
 		<a href="style.do?id=${musica.estilo.id}&action=show">${musica.estilo.nome}</a>
 		<br>
 		<a href="album.do?id=${musica.album.id}&action=show" data-toggle="modal">${musica.album.nome }</a><br>
-		<audio src="${musica.caminhoarq }" controls >		
+		<audio src="${musica.caminhoarq }" controls onplay="$.ajax('music.do?action=play&id=${musica.id }');" >		
 			Seu browser não tem suporte ao html5 audio
 		</audio>
-		</c:forEach>
+		<br>
+		<c:if test="${user.login eq 'administrador' }">
+			<a href="music.do?id=${musica.id}&action=delete" class="btn btn-danger">Deletar Música</a>
+		</c:if>
+	</c:forEach>
 		
 </div>
 

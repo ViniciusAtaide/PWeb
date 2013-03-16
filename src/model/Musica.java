@@ -28,7 +28,7 @@ public class Musica {
 	
 	@ManyToMany(cascade=CascadeType.PERSIST,mappedBy="musicas",fetch=FetchType.LAZY)
 	private List<Autor> autores = new ArrayList<Autor>();	
-	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "musica")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "musica")
 	private List<MiniPost> miniposts = new ArrayList<MiniPost>();
 	
 	@ManyToMany
@@ -133,6 +133,5 @@ public class Musica {
 
 	public void setNumusuarios(int numusuarios) {
 		this.numusuarios = numusuarios;
-	}
-	
+	}	
 }

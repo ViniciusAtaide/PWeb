@@ -60,6 +60,7 @@ public class MiniPostController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Erro na transacao.");
 		}
+		getServletContext().setAttribute("miniposts", minidao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
@@ -93,6 +94,7 @@ public class MiniPostController extends HttpServlet {
 		udao.close();
 		minidao.commit();
 		minidao.close();
+		getServletContext().setAttribute("miniposts", minidao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 

@@ -72,6 +72,7 @@ public class AlbumController extends HttpServlet {
 		} catch (PersistenceException e2 ) {
 			request.setAttribute("error_message", "Erro na transacao");
 		}
+		getServletContext().setAttribute("albums", aldao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
@@ -108,6 +109,7 @@ public class AlbumController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Album ja existente.");
 		}
+		request.setAttribute("albums", aldao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 }
