@@ -1,11 +1,13 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
-<div class="${tamanho }">	
+<div class="${tamanho } corpo">
+<small>Aqui você encontra o que as pessoas comentam e escutam atualmente.</small>	
 	<h3>Comunidade</h3>
-		<c:if test="${user ne null }">
+		<c:if test="${user ne null and user.login ne 'administrador'}">
+		
 			<div>
-				<h4>Novo MiniPost</h4>
+				<h4>Novo MiniPost</h4>				
 				<form action="minipost.do" method="post">
 					<input type="text" name="titulo" class="span2" placeholder="Titulo" /> <br>
 					<textarea name="conteudo" cols="5" rows="5" placeholder="Conteúdo"></textarea>

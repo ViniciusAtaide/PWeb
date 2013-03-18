@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
-<div class="${tamanho }">
+<div class="${tamanho } corpo">
 	<c:if test="${music ne null }">
 		<h4>
 			${author.nome }

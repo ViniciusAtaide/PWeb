@@ -23,18 +23,23 @@
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
 					<a class="brand" href="index.jsp">Projeto</a>
-					<c:if test="${user.login eq 'administrador' }">
-						<ul class="nav">
-							<li>
-								<a href="painel.jsp"><i class='icon-wrench icon-white'></i>Painel</a>
-							</li>
-						</ul>
-					</c:if>
+					<ul class="nav">
+					<c:if test="${user.login eq 'administrador' }">						
+						<li>
+							<a href="painel.jsp"><i class='icon-wrench icon-white'></i>Painel</a>
+						</li>						
+					</c:if>									
+					<c:if test="${user ne null }">
+						<li>
+							<btn class="btn btn-primary" href="#cadastromusica" data-toggle="modal">Adicionar Música</a>
+						</li>						
+					</c:if>					
+					</ul>
 					<div class="nav-collapse collapse">
 						<c:if test="${sessionScope.user ne null }">
 							<div class="nav pull-right span5">
 								<a href="user.do?action=logoff" class="btn btn-danger">LogOff</a>
-								<img src="${user.caminhofoto }" height="30" width="30" alt=" P	erfil" />
+								<img src="${user.caminhofoto }" height="30" width="30" alt=" Perfil" />
 								Bem-vindo <a href="#showuser" data-toggle="modal">${user.login}</a>
 							</div>
 						</c:if>

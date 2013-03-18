@@ -16,7 +16,16 @@
         height: 100%;
         /* The html and body elements cannot have any padding or margin. */
       }
-
+      
+      .corpo {
+      	background-color: #CDD2DB;
+      	border-radius: 15px;
+      	-moz-border-radius: 15px;
+      	-webkit-border-radius: 15px;
+      	margin-bottom: 15px;
+      	padding-bottom: 15px;	      
+      }
+      
       /* Wrapper for page content to push down footer */
       #wrap {
         min-height: 100%;

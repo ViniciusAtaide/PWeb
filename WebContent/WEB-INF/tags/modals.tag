@@ -40,13 +40,13 @@
 			
 			<!-- Div de para amostragem do usuário da sessão -->
 			
-<div id="showuser" class="modal hide fade" tabindex="-1" role="dialog" aria-labbeledby="Usuario" aria-hidden="false">
+<div id="showuser" class="modal hide fade pagination-centered" tabindex="-1" role="dialog" aria-labbeledby="Usuario" aria-hidden="false">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 		<h3 id="Usuario">Usuario</h3>
 	</div>
 	<div class="modal-body">
-		<img alt="Perfil" src="${user.caminhofoto}" height="100" width="200">
+		<img alt="Perfil" src="${user.caminhofoto}" height="100" width="200">		
 		<h3>${user.login} </h3>
 			<h4>MiniPosts</h4>
 			<c:forEach items="${user.miniposts }" var="minipost">
@@ -54,12 +54,14 @@
 			</c:forEach>
 			<h4>Musicas</h4>
 			<c:forEach items="${user.musicas }" var="musica">
-			<a href="musica.do?action=show&id=${musica.id }">${musica.nome }</a>
-			<audio controls>
-				<source src="${musica.caminhoarq }" type="audio/mp3"></source>					
-				Seu navegador nao tem suporte html5 audio.
-			</audio>		
+			<p>
+				<a href="musica.do?action=show&id=${musica.id }">${musica.nome }</a>
+				<audio controls class="pull-right">
+					<source src="${musica.caminhoarq }" type="audio/mp3">Seu navegador nao tem suporte html5 audio.</source>									
+				</audio>
+			</p>				
 			</c:forEach>
+			
 			${user.datacriado }
 	</div>
 </div>

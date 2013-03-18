@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -180,9 +181,11 @@ public class MusicaController extends HttpServlet {
 							autor = valor;
 						}
 					} else {
-						n = item.getName().replace(" ", "_");			
+						n = item.getName();
+						String comando = "/bin/bash -c \"sox "+caminho+n+" "+caminho+n.substring(0,n.indexOf("."))+ ".ogg\"";											
+						Runtime.getRuntime().exec(comando).waitFor();
 						
-						if (item.getFieldName().lastIndexOf("\\") >= 0) {							
+						if (item.getFieldName().lastIndexOf("\\") >= 0) {														
 							file = new File(caminho + n.substring(n.lastIndexOf("\\")));
 						} else {
 							file = new File(caminho + n.substring(n.lastIndexOf("\\") + 1));
@@ -191,8 +194,6 @@ public class MusicaController extends HttpServlet {
 							filepath += n;
 						}
 						item.write(file);
-						String comando = "/bin/bash -c \"sox "+caminho+n+" "+caminho+n.substring(0,n.indexOf("."))+ ".ogg\"";
-						Runtime.getRuntime().exec(comando).waitFor();
 					}
 				}
 			} catch (Exception e) {

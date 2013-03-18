@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import model.Usuario;
 import dao.DAOAutor;
 import dao.DAOEstilo;
+import dao.DAOMusica;
 
 @WebFilter(dispatcherTypes = {DispatcherType.REQUEST }
 					, urlPatterns = { "/painel.jsp" })
@@ -24,9 +25,11 @@ public class PainelFilter implements Filter {
 
 	DAOAutor audao;
 	DAOEstilo edao;
+	DAOMusica mudao;
     public PainelFilter() {
     	audao = new DAOAutor();
     	edao = new DAOEstilo();
+    	mudao = new DAOMusica();
     }
 
 	public void destroy() {
@@ -38,17 +41,19 @@ public class PainelFilter implements Filter {
 		HttpSession session = req.getSession();
 		Usuario u = (Usuario)session.getAttribute("user");
 		try {
-		if( !(u.getLogin().equals(req.getServletContext().getInitParameter("admlogin")))) {
-			res.sendRedirect("index.jsp");
+		if( !(u.getLogin().equals(req.getServletContext().getInitParameter("admlogin")))) {			
 			req.setAttribute("error_message", "Permissão negada.");
+			req.getRequestDispatcher("index.jsp").forward(req, res);
 		} else	{	
 			req.setAttribute("authors", audao.findAll());
 			req.setAttribute("styles", edao.findAll());
+			req.setAttribute("musics", mudao.findAll());	
 			chain.doFilter(request, response);
+			
 		}
 		} catch (NullPointerException e) {
-			res.sendRedirect("index.jsp");
 			req.setAttribute("error_message", "Permissão negada.");
+			req.getRequestDispatcher("index.jsp").forward(req, res);
 		}
 	}
 	public void init(FilterConfig fConfig) throws ServletException {

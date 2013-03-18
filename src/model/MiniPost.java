@@ -24,7 +24,7 @@ public class MiniPost {
 	@Temporal(TemporalType.DATE)
 	private Calendar datapostado;
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.DETACH)
 	private Musica musica;
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	private Usuario usuario;
@@ -38,8 +38,7 @@ public class MiniPost {
 		this.titulo = titulo;
 		this.datapostado = Calendar.getInstance();
 	}
-	public MiniPost(String conteudo, String titulo, Musica musica,
-			Usuario usuario) {
+	public MiniPost(String conteudo, String titulo, Musica musica, Usuario usuario) {
 		this.conteudo = conteudo;
 		this.titulo = titulo;
 		this.musica = musica;

@@ -14,8 +14,8 @@ public class DAOMusica extends DAOJPA<Musica>{
 		return m;
 	}	
 	@SuppressWarnings("unchecked")
-	public List<Musica> findTopMusicas() {
-		List<Musica> m = this.findAllByQuery("select m from Musica m order by m.numusuarios");
+	public List<Musica> findTopMusicas() {		
+		List<Musica> m = (List<Musica>) DAOMusica.getManager().createQuery("select m from Musica m order by m.numusuarios").setMaxResults(10).getResultList();
 		return m;
 	}
 }

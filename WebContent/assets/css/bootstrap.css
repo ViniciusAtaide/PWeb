@@ -6110,9 +6110,10 @@ a.badge:focus {
 }
 
 .hero-unit {
-  padding: 60px;
-  margin-bottom: 30px;
-  font-size: 18px;
+  padding: 40px;
+  margin-bottom: 30px;  
+  padding-left:0px;	
+  font-size: 16px;
   font-weight: 200;
   line-height: 30px;
   color: inherit;
