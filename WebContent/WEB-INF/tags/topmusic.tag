@@ -22,7 +22,9 @@
 		</p> </small>
 		
 		<c:if test="${user.login eq 'administrador' }">
+		<div class=" pagination-centered">
 			<a href="music.do?id=${musica.id}&action=delete" class="btn btn-danger">Deletar Música</a>
+		</div>
 		</c:if>
 	</c:forEach>
 		

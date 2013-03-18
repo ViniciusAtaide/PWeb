@@ -55,7 +55,6 @@ public class AutorController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Erro na transacao.");
 		}
-		getServletContext().setAttribute("autors", audao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 	
@@ -92,7 +91,6 @@ public class AutorController extends HttpServlet {
 		} catch (PersistenceException e) {
 			request.setAttribute("error_message", "Erro na transacao.");
 		}
-		getServletContext().setAttribute("autors", audao.findAll());		
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 

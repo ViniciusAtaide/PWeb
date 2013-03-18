@@ -22,7 +22,7 @@ public class Autor {
 
 	@ManyToMany(cascade=CascadeType.PERSIST,mappedBy="autores",fetch=FetchType.EAGER)
 	private List<Estilo> estilos = new ArrayList<Estilo>();
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Musica> musicas = new ArrayList<Musica>();
 	@ManyToMany(cascade=CascadeType.ALL,mappedBy="autores",fetch=FetchType.LAZY)
 	private List<Album> albuns = new ArrayList<Album>();

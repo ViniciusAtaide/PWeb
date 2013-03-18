@@ -46,7 +46,7 @@ public class PainelFilter implements Filter {
 			req.getRequestDispatcher("index.jsp").forward(req, res);
 		} else	{	
 			req.setAttribute("authors", audao.findAll());
-			req.setAttribute("styles", edao.findAll());
+			req.setAttribute("styles", edao.findAll());			
 			req.setAttribute("musics", mudao.findAll());	
 			chain.doFilter(request, response);
 			
