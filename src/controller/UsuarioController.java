@@ -23,7 +23,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import dao.DAOModerador;
 import dao.DAOUsuario;
 
-@WebServlet(urlPatterns = { "/user.do", "/usuario/user.do" })
+@WebServlet(urlPatterns = { "/user.do"})
 public class UsuarioController extends HttpServlet {
 
 	private enum action {
@@ -36,7 +36,7 @@ public class UsuarioController extends HttpServlet {
 	private File file;
 	private DAOUsuario udao;
 	private static final long serialVersionUID = 1L;
-	private static String URL = "/usuario/user.jsp";
+	private static String URL = "user.jsp";
 
 	public UsuarioController() {
 		super();

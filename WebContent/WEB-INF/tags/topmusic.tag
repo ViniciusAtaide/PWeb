@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
+
 <div class="${tamanho } corpo">
 	<h3 class="pagination-centered">Top Musicas</h3>	
 	<c:if test="${empty topmusics}">
@@ -8,17 +9,15 @@
 	</c:if>
 	<c:forEach items="${topmusics}" var="musica">
 		<p>
-			<audio  controls onplay="$.ajax('music.do?action=play&id=${musica.id }');" class="pull-right">		
-				<source src="${musica.caminhoarq }">Seu browser não tem suporte ao html5 audio</source>
-			</audio>
-			<a href="music.do?id=${musica.id}&action=show" data-toggle="modal">${musica.nome}</a>*
+			<a class="btn" href="music.do?id=${musica.id}&action=add"><i class="icon-play"></i></a>
+			<a href="music.do?id=${musica.id}&action=show">${musica.nome}</a>*
 			<small>
 			<c:forEach items="${musica.autores }" var="autor">
-				<a href="author.do?id=${autor.id}&action=show" data-toggle="modal">${autor.nome}</a>
+				<a href="author.do?id=${autor.id}&action=show">${autor.nome}</a>
 			</c:forEach>
 			*
 			<a href="style.do?id=${musica.estilo.id}&action=show">${musica.estilo.nome}</a>*
-			<a href="album.do?id=${musica.album.id}&action=show" data-toggle="modal">${musica.album.nome }</a>			 
+			<a href="album.do?id=${musica.album.id}&action=show">${musica.album.nome }</a>			 
 		</p> </small>
 		
 		<c:if test="${user.login eq 'administrador' }">

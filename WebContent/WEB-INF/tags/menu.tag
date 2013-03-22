@@ -6,5 +6,7 @@
 		<li><a href="music.jsp"><i class="icon-music"></i>Musica<i class="icon-chevron-right pull-right"></i> </a></li>
 		<li><a href="style.jsp"><i class="icon-star"></i>Estilo<i class="icon-chevron-right pull-right"></i> </a></li>
 		<li><a href="author.jsp"><i class="icon-user"></i>Autores<i class="icon-chevron-right pull-right"></i> </a></li>
-	</ul>	
+	</ul>
+	<v:player />	
 </div>
+

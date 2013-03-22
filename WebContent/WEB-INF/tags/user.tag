@@ -2,10 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
 <div class="${tamanho } corpo">
-	<c:if test="${user ne null }">
+	<c:if test="${usu ne null }">
 		<div class="row">
 			<h3>Usuário</h3>
-		
+			<c:if test="${user.login eq 'administrador' }">
+				<a href="usu.do?action=delete&id=${usu.id }">Deletar Usuário</a>
+			</c:if>
 			<p><img src="${usu.caminhofoto }" alt="Foto do Usuário" height="200" width="200"/></p>
 			<h4>${usu.login }</h4>
 			<p>Data em que logou pela primeira vez: ${usu.datacriado }</p>

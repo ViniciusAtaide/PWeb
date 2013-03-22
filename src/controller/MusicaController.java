@@ -2,7 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class MusicaController extends HttpServlet {
 	private String n;
 
 	private enum action {
-		delete, create, update, search, show, play,showstyles;
+		delete, create, update, search, show, play,add;
 	}
 
 	private DAOMusica mudao;
@@ -61,9 +61,8 @@ public class MusicaController extends HttpServlet {
 
 	public void init() {
 	}
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	// doGet trabalha com requisicoes de objetos ja existentes nas listas
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		caminho = getServletContext().getInitParameter("file-upload");
 		filepath = getServletContext().getInitParameter("file-path");
 		mudao = new DAOMusica();
@@ -74,6 +73,9 @@ public class MusicaController extends HttpServlet {
 		String busca = request.getParameter("busca");
 		int id = 0;
 		Musica m = null;
+		@SuppressWarnings("unchecked")
+		List<Musica> playlist = (List<Musica>) session.getAttribute("playlist");
+		// busca na requisicao o id da musica para referencia no banco
 		if (request.getParameter("id") != null) {
 			id = Integer.parseInt(request.getParameter("id"));
 			m = mudao.find(id);
@@ -96,7 +98,6 @@ public class MusicaController extends HttpServlet {
 				request.setAttribute("music", m);
 				break;
 			case play:
-
 				Usuario sessionuser = (Usuario) session.getAttribute("user");
 				if (sessionuser != null) {
 					minidao = new DAOMiniPost();
@@ -121,6 +122,13 @@ public class MusicaController extends HttpServlet {
 				}
 				forward = "index.jsp";
 				break;
+			case add :
+				if (playlist == null) {					
+					playlist = new ArrayList<Musica>();					
+				}	
+				playlist.add(m);
+				session.setAttribute("playlist", playlist);
+				forward = "index.jsp";
 			default:
 				break;
 			}

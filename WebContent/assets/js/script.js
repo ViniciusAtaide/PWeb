@@ -46,7 +46,7 @@ $(document).ready(function() {
 		return true;
 	});	
 });
-// Função mista para ambos os campos de arquivo de música e foto do usuario utilizando html5 files
+// Função de abrir os arquivos id3 usando html 5
 function abreId3(input) {
 	  var reader = new FileReader();
 
@@ -64,19 +64,41 @@ function abreId3(input) {
 	      		$("#aut").val(dv.getString(30, dv.tell()));
 	      		$("#alb").val(dv.getString(30, dv.tell()));
 		    } else {
-		    	$("#erro_musica").html("Formato id3 não suportado.");
+		    	$("#error_submit").html("Formato id3 não suportado.");
 		    }
 	  };
 
 	  reader.readAsArrayBuffer(input.files[0]);
 }
 
-// função html 5 para pegar informações de imagem
+// Grupo de funções de playlist
 function tocaMusica(input) {
+	var selecionada = $("#playlist").querySelector(".selected");
+	if (selecionada) {
+		selecinoada.classList.remove("selected");	
+	}	
+	input.classList.add("selected");
 	
-		
+	$("#player").src = input.getAttribute("data-ogg");		
+	$("#player").play();
+	$.ajax('music.do?action=play&id='+input.getAttribute("data-id"));
 }
-//
+function tocaProxima() {
+	var selecionada = $("#playlist").querySelector("li.selected");
+	if (selecionada && selecionada.nextSibling) {
+		tocaMusica(selecionada.nextSibling);
+	}
+}
+
+$("#playlist").on("click",function(e) {
+	if (e.target && e.target.nodeName === "LI") {
+		tocaMusica(e.target);
+	}
+});
+////////////////////////////////////////////////////
+
+
+//função html 5 para pegar informações de imagem
 function abreURL(input) {	
 	if (input.files && input.files[0]) {
 		var f = input.files[0];	      	
@@ -93,12 +115,6 @@ function abreURL(input) {
 				
 		return false;
 	}		
-}
-
-// Postagem 
-
-function postarMusica() {
-	
 }
 
 

@@ -11,6 +11,9 @@
           width:255px;
           height:22px;
       }
+      .selected {
+      	font-weight: bold;
+      }
       html,
       body {
         height: 100%;
