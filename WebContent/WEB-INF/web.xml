@@ -15,9 +15,7 @@
   </error-page>
   <context-param>
     <param-name>file-upload</param-name>
-    <param-value>
-         /home/vinicius/workspace/PWeb/WebContent/bd/
-     </param-value>
+    <param-value>/home/vinicius/workspace/PWeb/WebContent/bd/</param-value>
   </context-param>
   <context-param>
     <param-name>file-path</param-name>

@@ -1,6 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
+<%@ page import="dao.DAOUsuario" %>
+<% DAOUsuario udao = new DAOUsuario(); %>
 <div class="${tamanho } corpo">
 	<h3>Albuns</h3>
 	<c:if test="${user ne null }">
@@ -27,7 +29,7 @@
 		<a href="author.do?action=show&id=${author.id }" >${author.nome }</a>
 		</c:forEach>
 		</p>
-		<c:if test="${user.login eq 'administrador' }">
+		<c:if test="${user.login eq pageScope.udao.login }">
 			<a href="author.do?action=delete&id=${album.id }" class="btn btn-danger">Deletar Album</a>
 		</c:if>
 	</c:forEach>	

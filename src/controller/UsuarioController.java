@@ -36,7 +36,7 @@ public class UsuarioController extends HttpServlet {
 	private File file;
 	private DAOUsuario udao;
 	private static final long serialVersionUID = 1L;
-	private static String URL = "user.jsp";
+	private static String URL = "index.jsp";
 
 	public UsuarioController() {
 		super();
@@ -46,7 +46,7 @@ public class UsuarioController extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		getDAOUsuario();
+		udao = new DAOUsuario();
 		String forward = URL;
 		HttpSession session = request.getSession();
 		String a = request.getParameter("action");
@@ -90,7 +90,7 @@ public class UsuarioController extends HttpServlet {
 		String login = null;
 		String pass = null;		
 		String forward = "index.jsp";
-		getDAOUsuario();
+		udao = new DAOUsuario();
 
 		udao.begin();
 
@@ -141,16 +141,14 @@ public class UsuarioController extends HttpServlet {
 			a = request.getParameter("action");
 		}
 
-		// /
+		// checa a acao que vem do cliente
 
 		switch (action.valueOf(a)) {
-
 		case login:
 			try {
 				Usuario u = udao.findByLogin(login);
-				if (pass.equals(u.getSenha())
-						|| (!(modao.find(1).getLogin().equals(login)) && (!(modao
-								.find(1).getSenha().equals(pass))))) {
+				// Checa se o login e senha do usuario e administrador existe
+				if (pass.equals(u.getSenha()) || (!(modao.find(1).getLogin().equals(login)) && (!(modao.find(1).getSenha().equals(pass))))) {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", u);
 					request.setAttribute("content_message", "Login concluido!");
@@ -165,8 +163,7 @@ public class UsuarioController extends HttpServlet {
 			break;
 		case create:
 			try {
-				if (udao.findByLogin(login) == null
-						|| !(modao.find(1).getLogin().equals(login))) {
+				if (udao.findByLogin(login) == null || !(modao.find(1).getLogin().equals(login))) {
 					Usuario user = new Usuario(login, pass, filepath);
 					udao.persist(user);
 					HttpSession session = request.getSession();
@@ -200,12 +197,5 @@ public class UsuarioController extends HttpServlet {
 		getServletContext().setAttribute("users", udao.findAll());
 		request.getRequestDispatcher(forward).forward(request, response);
 		
-	}
-
-	private DAOUsuario getDAOUsuario() {
-		if (udao == null) {
-			udao = new DAOUsuario();
-		}
-		return udao;
 	}
 }

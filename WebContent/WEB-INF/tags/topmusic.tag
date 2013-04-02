@@ -9,7 +9,7 @@
 	</c:if>
 	<c:forEach items="${topmusics}" var="musica">
 		<p>
-			<a class="btn" href="music.do?id=${musica.id}&action=add"><i class="icon-play"></i></a>
+			<a class="btn" href="music.do?id=${musica.id}&action=add" class="play"><i class="icon-play"></i></a>
 			<a href="music.do?id=${musica.id}&action=show">${musica.nome}</a>*
 			<small>
 			<c:forEach items="${musica.autores }" var="autor">

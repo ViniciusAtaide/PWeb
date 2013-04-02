@@ -46,7 +46,7 @@ $(document).ready(function() {
 		return true;
 	});	
 });
-// Função de abrir os arquivos id3 usando html 5
+// Função de abrir os arquivos id3 usando html5
 function abreId3(input) {
 	  var reader = new FileReader();
 
@@ -74,9 +74,8 @@ function abreId3(input) {
 // Grupo de funções de playlist
 function tocaMusica(input) {
 	var selecionada = $("#playlist").querySelector(".selected");
-	if (selecionada) {
-		selecinoada.classList.remove("selected");	
-	}	
+	if (selecionada)
+		selecionada.classList.remove("selected");		
 	input.classList.add("selected");
 	
 	$("#player").src = input.getAttribute("data-ogg");		
@@ -92,7 +91,7 @@ function tocaProxima() {
 
 $("#playlist").on("click",function(e) {
 	if (e.target && e.target.nodeName === "LI") {
-		tocaMusica(e.target);
+		tocaMusica(e.target);		
 	}
 });
 ////////////////////////////////////////////////////
