@@ -1,0 +1,75 @@
+@CHARSET "ISO-8859-1";
+      #div-input-file #file-original{
+          opacity: 0.0;
+          -moz-opacity: 0.0;
+          filter: alpha(opacity=00);
+      }
+      #div-input-falso{
+          margin-top:-28px;
+      }
+      #div-input-falso #file-falso{
+          width:255px;
+          height:22px;
+      }
+      .selected {
+      	font-weight: bold;
+      }
+      html,
+      body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
+
+      .corpo {
+      	background-color: #CDD2DB;
+      	border-radius: 15px;
+      	-moz-border-radius: 15px;
+      	-webkit-border-radius: 15px;
+      	margin-bottom: 15px;
+      	padding-bottom: 15px;	      
+      }
+      
+      /* Wrapper for page content to push down footer */
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+        height: 60px;
+      }
+      #footer {
+        background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+
+
+
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+
+      #wrap > .container {
+        padding-top: 60px;
+      }
+      .container .credit {
+        margin: 20px 0;
+      }
+
+      code {
+        font-size: 80%;
+      }
