@@ -1,6 +1,6 @@
 package application;
 
-<<<<<<< HEAD
+
 import model.Album;
 import model.Autor;
 import model.Estilo;
@@ -10,17 +10,14 @@ import model.Usuario;
 import dao.DAOMiniPost;
 import dao.DAOMusica;
 import dao.DAOUsuario;
-=======
-import model.*;
-import dao.*;
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
+
 
 public class Application1 {	
 	public static void main(String[] args) {
 		DAOUsuario udao;
 		DAOMusica mdao;
 		DAOMiniPost minidao;
-<<<<<<< HEAD
+
 		
 		udao = new DAOUsuario();
 		minidao = new DAOMiniPost();
@@ -83,22 +80,3 @@ public class Application1 {
 	}
 }
 
-=======
-		DAOEstilo edao;
-		DAOAutor audao;
-		
-		udao = new DAOUsuario();
-		
-		udao.begin();
-		Usuario u = new Usuario("Vinicius","123");		
-		Musica m = new Musica("Sultans of Swing","Musica famosa de Dire Straits");
-		Autor a = new Autor("Dire Straits","Surgiu nos anos 80...");
-		minidao = new DAOMiniPost();
-		m.addAutor(a);
-		MiniPost mi = new MiniPost("Ola eu estou postando!","Titulo 1");
-		MiniPost mi2 = new MiniPost("Autor: "+m.getAutores().get(0) , "Vinicius escutou "+m.getNome());
-		minidao.persist(mi);
-		minidao.persist(mi2);
-	}
-}
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555

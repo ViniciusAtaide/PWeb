@@ -22,7 +22,6 @@ public class Application2 {
 			System.out.println(minidao.find(1).getTitulo());
 		} catch (PersistenceException e) {
 			System.out.println("Deu algo errado");
-		}
-		
+		}		
 	}
 }

@@ -38,7 +38,6 @@ public class MiniPost {
 		this.titulo = titulo;
 		this.datapostado = Calendar.getInstance();
 	}
-<<<<<<< HEAD
 	public MiniPost(Musica musica, Usuario usuario) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Autores: ");
@@ -50,13 +49,12 @@ public class MiniPost {
 		musica.addMiniPost(this);
 		this.usuario = usuario;
 		usuario.addMiniPost(this);
-=======
+	}
 	public MiniPost(String conteudo, String titulo, Musica musica, Usuario usuario) {
 		this.conteudo = conteudo;
 		this.titulo = titulo;
 		this.musica = musica;
 		this.usuario = usuario;
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 		this.datapostado = Calendar.getInstance();
 	}
 

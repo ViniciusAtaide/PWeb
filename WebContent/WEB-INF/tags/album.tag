@@ -1,8 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="tamanho" required="true" description="tamanho da div" %>
-<%@ page import="dao.DAOUsuario" %>
-<% DAOUsuario udao = new DAOUsuario(); %>
 <div class="${tamanho } corpo">
 	<h3>Albuns</h3>
 	<c:if test="${user ne null }">

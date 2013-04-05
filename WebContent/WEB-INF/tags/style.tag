@@ -5,12 +5,9 @@
 
 
 	<!-- Checa se o resultado da busca existe -->
-<<<<<<< HEAD
 	<c:if test="${user.login eq 'administrador' }">
 			<a class="btn btn-primary" href="#cadastroestilo" data-toggle="modal">Novo estilo</a>			
 	</c:if>		
-=======
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 	<c:if test="${!empty result}">
 		<h3>Resultado da busca</h3>	
 		<c:forEach items="${result}" var="estilo">
@@ -30,12 +27,12 @@
 			</c:forEach>					
 		</c:forEach>
 	</c:if>
-<<<<<<< HEAD
+
 		
 	<c:if test="${!empty styles }">
 		<h3>Estilos</h3>		
 		
-=======
+
 	<c:if test="${empty styles }">		
 		<h4 class="text-info">Não há nenhum estilo </h4>
 	</c:if>
@@ -45,7 +42,6 @@
 		<c:if test="${user.login eq 'administrador' }">
 			<a class="btn btn-primary" href="#cadastroestilo" data-toggle="modal">Novo estilo</a>			
 		</c:if>		
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 		<c:forEach items="${styles}" var="style">
 			<h4>
 				${style.nome }
@@ -92,10 +88,7 @@
 		</p>
 		<c:if test="${user.login eq 'administrador'}">
 			<a href="style.do?action=delete&id=${style.id }" class="btn btn-danger">Deletar estilo</a>
-<<<<<<< HEAD
 		</c:if>		
-=======
 		</c:if>
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 	</c:if>
 </div>

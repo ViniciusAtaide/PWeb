@@ -34,15 +34,10 @@ public class Musica {
 	@ManyToMany
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
-<<<<<<< HEAD
+
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Estilo estilo;
-	@ManyToOne(cascade=CascadeType.ALL)
-=======
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private Estilo estilo;
-	@ManyToOne(cascade=CascadeType.PERSIST)
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 	private Album album;
 
 	@SuppressWarnings("unused")
@@ -123,6 +118,9 @@ public class Musica {
 
 	public void addMiniPost(MiniPost minipost) {
 		this.miniposts.add(minipost);
+	}
+	public void removeMiniPost(MiniPost minipost) {
+		this.miniposts.remove(minipost);
 	}
 
 	public String getCaminhoarq() {

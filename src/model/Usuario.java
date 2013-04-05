@@ -34,11 +34,7 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	private Calendar datacriado;
 
-<<<<<<< HEAD
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "usuario")
-=======
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "usuario")
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "usuario")
 	private List<MiniPost> miniposts = new ArrayList<MiniPost>();
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "usuarios")
 	private List<Musica> musicas = new ArrayList<Musica>();
@@ -132,8 +128,4 @@ public class Usuario {
 		miniposts.remove(minipost);
 
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 }
