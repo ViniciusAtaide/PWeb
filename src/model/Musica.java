@@ -34,9 +34,15 @@ public class Musica {
 	@ManyToMany
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
 	
+<<<<<<< HEAD
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Estilo estilo;
 	@ManyToOne(cascade=CascadeType.ALL)
+=======
+	@ManyToOne(cascade=CascadeType.PERSIST)
+	private Estilo estilo;
+	@ManyToOne(cascade=CascadeType.PERSIST)
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 	private Album album;
 
 	@SuppressWarnings("unused")

@@ -7,5 +7,9 @@
 		<li><a href="style.jsp"><i class="icon-star"></i>Estilo<i class="icon-chevron-right pull-right"></i> </a></li>
 		<li><a href="author.jsp"><i class="icon-user"></i>Autores<i class="icon-chevron-right pull-right"></i> </a></li>
 	</ul>
+<<<<<<< HEAD
+=======
+	<v:player />	
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 </div>
 

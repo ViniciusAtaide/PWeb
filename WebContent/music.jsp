@@ -8,7 +8,11 @@
 	<div class="hero-unit span8">		
 		<div class="span10">																							
 			<div class="row">
+<<<<<<< HEAD
 				<v:music tamanho="span8"/>		
+=======
+				<v:music tamanho="span8" />		
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 			</div><!-- row -->
 		</div>		
 		<p class="text-success pagination-centered" id="music-message">${requestScope.music_message}</p>

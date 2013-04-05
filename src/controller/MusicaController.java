@@ -91,22 +91,45 @@ public class MusicaController extends HttpServlet {
 				request.setAttribute("content_message","Musica removida com sucesso");
 				break;
 			case search:
+<<<<<<< HEAD
 				List<Musica> result = mudao.findByNome(busca);
 				if (result.isEmpty()) {
 					request.setAttribute("result", "N");
 					break;
 				}					
 				request.setAttribute("result", result);
+=======
+				request.setAttribute("result", mudao.findByNome(busca));
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 				request.setAttribute("success_message", "Resultado da busca");
 				break;
 			case show:
 				request.setAttribute("music", m);
 				break;
 			case play:
+<<<<<<< HEAD
 				Usuario sessionuser = (Usuario) session.getAttribute("user");				
 				if (sessionuser != null) {									
 					minidao = new DAOMiniPost();
 					MiniPost mp = new MiniPost(m, sessionuser);
+=======
+				Usuario sessionuser = (Usuario) session.getAttribute("user");
+				if (sessionuser != null) {
+					minidao = new DAOMiniPost();
+					String autores = "";
+					if (m.getAutores().size() != 1) {
+						for (Autor au : m.getAutores()) {
+							autores += au.getNome() + ", ";
+						}
+					} else {
+						autores = m.getAutores().get(0).getNome();
+					}
+					String titulo = sessionuser.getLogin() + " escutou "
+							+ m.getNome();
+					String conteudo = "Estilo: " + m.getEstilo().getNome() + "\nAlbum: "
+							+ m.getAlbum().getNome() + "\nAutores: " + autores;
+					MiniPost mp = new MiniPost(conteudo, titulo, m, sessionuser);
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 					minidao.begin();
 					minidao.persist(mp);
 					minidao.commit();
@@ -183,6 +206,12 @@ public class MusicaController extends HttpServlet {
 						}
 					} else {
 						n = item.getName();
+<<<<<<< HEAD
+=======
+						String comando = "/bin/bash -c \"sox "+caminho+n+" "+caminho+n.substring(0,n.indexOf("."))+ ".ogg\"";											
+						Runtime.getRuntime().exec(comando).waitFor();
+						
+>>>>>>> 8a5e7fbb305405dbd2233f154c85d996a81bf555
 						if (item.getFieldName().lastIndexOf("\\") >= 0) {														
 							file = new File(caminho + n.substring(n.lastIndexOf("\\")));
 						} else {
